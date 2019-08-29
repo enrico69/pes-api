@@ -1,0 +1,42 @@
+version: "3.6"
+services:
+  nginx: # Name of the service. Used for communication between container, in fact in any configuration.
+    build: docker/nginx # let's override with our configuration in the docker file in this folder
+    container_name: api-platform-webserver
+    working_dir: /var/www/html/  # Just set the default working dir when we connect on the container
+    volumes:
+      - ./:/var/www/html # Means that the root folder of our project will be mapped on the given folder in the container
+      - ./docker/data/nginx/sites-available:/etc/nginx/sites-available
+      - ./docker/data/nginx/sites-enabled:/etc/nginx/sites-enabled
+    ports:
+      - "80:80"
+    #tty: true
+    depends_on: # Tells Docker that we need to wait and allow the given container to be accessible by the other one
+      - php-fpm
+    links:  # Tells Docker that the target container will be accessible with this alias. Soon deprecated
+      - php-fpm
+
+  php-fpm:
+    build: docker/php-fpm
+    container_name: api-platform-php-fpm
+    working_dir: /var/www/html/
+    volumes:
+      - ./:/var/www/html
+    links:
+      - mysql
+
+  mysql:
+    image: mysql:5.7.25 # We do not need specific settings... for now. So let's start directly from this image.
+    container_name: api-platform-mysql
+    volumes:
+        - ./docker/data/db:/var/lib/mysql
+    command: "--default-authentication-plugin=mysql_native_password"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=asdgl
+      - MYSQL_DATABASE=adppc
+      - MYSQL_USER=adppc
+      - MYSQL_PASSWORD=azerty
+
+
