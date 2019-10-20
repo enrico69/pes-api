@@ -1,0 +1,19 @@
+<div class="screen" id="screen_teamSelection">
+    Quelle est l'équipe qui reçoit?
+    <button class="actionButton" id="team_select_button-{{ match.team1.id }}" data-teamid="{{ match.team1.id }}">{{ match.team1.name }}</button>
+    <button class="actionButton" id="team_select_button-{{ match.team2.id }}" data-teamid="{{ match.team2.id }}">{{ match.team2.name }}</button>
+
+    <script type="text/javascript">
+        $( "[id^=team_select_button]" ).click(function () {
+            var value = $(this).attr('data-teamid');
+            matchData[teamHomeKey] = value;
+            if(value == team1Id) {
+                matchData[teamAwayKey] = team2Id;
+            } else {
+                matchData[teamAwayKey] = team1Id;
+            }
+            $('#screen_teamSelection').hide();
+            $('#screen_playersSelection').show();
+        });
+    </script>
+</div>

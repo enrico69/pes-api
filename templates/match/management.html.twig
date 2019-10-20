@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="FR">
+<head>
+    {% include 'general/common-header.html.twig' %}
+    <script type="text/javascript">
+        var homeURL = "{{ url('homepage') }}";
+        var updateSubmitURL = "{{ url('tournament-management-submit') }}";
+
+        // Keys for the payload
+        var matchData = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::MATCH_DATA_KEY') }}";
+        var matchId = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::MATCH_ID_KEY') }}";
+        var teamHomeKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::TEAM_HOME_KEY') }}";
+        var teamAwayKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::TEAM_AWAY_KEY') }}";
+        var teamIdKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::TEAM_ID_KEY') }}";
+        var stadiumKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::STADIUM_KEY') }}";
+        var compoHomeKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::COMPO_HOME_KEY') }}";
+        var compoAwayKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::COMPO_AWAY_KEY') }}";
+        var replacedByKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::REPLACED_BY_KEY') }}";
+        var replacedAtKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::REPLACED_AT_KEY') }}";
+        var typeKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::TYPE_KEY') }}";
+        var goalKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::GOAL_KEY') }}";
+        var goalTypeKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::GOAL_TYPE_KEY') }}";
+        var ownGoalKey = "{{ constant('App\\Entity\\Goal::TYPE_OWN_GOAL') }}";
+        var penaltyGoalKey = "{{ constant('App\\Entity\\Goal::TYPE_PENALTY_GOAL') }}";
+        var playerIdKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::PLAYER_ID_KEY') }}";
+        var happenedAtKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::HAPPENED_AT_KEY') }}";
+        var assistPlayerIdKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::ASSIST_PLAYER_ID_KEY') }}";
+        var commentsKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::COMMENTS_KEY') }}";
+        var eventsKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::EVENTS_KEY') }}";
+        var redcardsKey = "{{ constant('App\\Entity\\Event::TYPE_RED_CARD') }}";
+        var yellowcardsKey = "{{ constant('App\\Entity\\Event::TYPE_YELLOW_CARD') }}";
+        var woundedKey = "{{ constant('App\\Entity\\Event::TYPE_WOUND') }}";
+        var eventOffsideGoalKey = "{{ constant('App\\Entity\\Event::TYPE_OFFSIDE_GOAL') }}";
+        var eventPostHitKey = "{{ constant('App\\Entity\\Event::TYPE_POST_HIT') }}";
+        var eventMissedPenaltyKey = "{{ constant('App\\Entity\\Event::TYPE_MISSED_PENALTY') }}";
+        var eventScoredPenaltyShootoutKey = "{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_SCORED_KEY') }}";
+        var eventMissedPenaltyShootoutKey = "{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_MISSED_KEY') }}";
+
+        // Game data
+        var team1Id = {{ match.team1.id }};
+        var team2Id = {{ match.team2.id }};
+        var matchData = {};
+        var eventCount = 0;
+        matchData[matchId] = {{ match.id }};
+        matchData[compoHomeKey] = {};
+        matchData[compoAwayKey] = {};
+        matchData[eventsKey] = {};
+        matchData[commentsKey] = '';
+        matchData[goalKey] = {};
+        var currentMinute;
+        var currentScreen;
+        var currentDiv;
+        var currentGoalType;
+        var goalCountHome = 0;
+        var goalCountAway = 0;
+        var currentEventType;
+    </script>
+    <script src="{{ asset('assets/js/pes/match-management.js') }}"></script>
+</head>
+<body>
+<div id="content" class="container">
+    <div id="mobile-container">
+        {% include('match/screens/minutes.html.twig') %}
+        {% include('match/screens/team_selection.html.twig') %}
+        {% include('match/screens/stadium_selection.html.twig') %}
+        {% include('match/screens/players_selection.html.twig') %}
+        {% include('match/screens/actions.html.twig') %}
+        {% include('match/screens/goals.html.twig') %}
+        {% include('match/screens/events.html.twig') %}
+        <div id="spinner" style="display: none;"><img alt="Chargement" src="{{ asset('assets/images/spinner.gif') }}"/></div>
+    </div>
+</div>
+</body>
+</html>

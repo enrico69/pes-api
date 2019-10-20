@@ -1,0 +1,20 @@
+<div class="screen" id="screen_stadiumSelection">
+    <p class="titleBar">Sélection du stade :</p>
+    <select id="selectStadium" class="dropdownPes">
+        {% for stadium in stadiums %}
+            <option value="{{ stadium.id }}">{{ stadium.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button id="stadiumSelection" class="actionButton">Continuer</button>
+
+    <script type="text/javascript">
+        $('#screen_stadiumSelection').show();
+        $("#stadiumSelection" ).click(function () {
+            matchData[stadiumKey] = $("#selectStadium").val();
+            $('#screen_stadiumSelection').hide();
+            $('#screen_teamSelection').show();
+            currentScreen = 'teamSelection';
+        });
+    </script>
+</div>

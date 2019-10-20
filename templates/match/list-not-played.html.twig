@@ -1,0 +1,14 @@
+{#
+    @author: Eric COURTIAL <e.courtial30@gmail.com>
+#}
+{% extends 'base.html.twig' %}
+{% block body %}
+    <ul>
+        {% for match in matches %}
+            <li>
+                {{ match.type|capitalize }} : {{ match.team1.name }} - {{ match.team2.name }}
+                -- <a href="{{ url('play-match', {'id': match.id}) }}">Jouer</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

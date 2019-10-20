@@ -1,0 +1,16 @@
+<div id="screen_eventInfo" class="screen">
+    <button id="matchEventMissedPen" class="bigActionButton" data-type="{{ constant('App\\Entity\\Event::TYPE_MISSED_PENALTY') }}" style="background: #1F61A0">Penalty raté</button>
+    <button id="matchEventOffsideGoal" class="bigActionButton" style="background: grey" data-type="{{ constant('App\\Entity\\Event::TYPE_OFFSIDE_GOAL') }}" >But hors jeu</button>
+    <button id="matchEventPostHit" class="bigActionButton" style="background: #1e7e34" data-type="{{ constant('App\\Entity\\Event::TYPE_POST_HIT') }}" >Tir sur le poteau</button>
+    <button id="matchEventScoredPenaltyShootout" class="bigActionButton" style="background: #ffc107; color: black;" data-type="{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_SCORED_KEY') }}" >Tir au but réussi</button>
+    <button id="matchEventMissedPenaltyShootout" class="bigActionButton" style="background: red" data-type="{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_MISSED_KEY') }}" >Tir au but raté</button>
+</div>
+<script type="text/javascript">
+    $( "[id^=matchEvent]" ).click(function () {
+        currentEventType = $(this).attr('data-type');
+        currentScreen = 'eventScreen';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_eventInfo').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+</script>

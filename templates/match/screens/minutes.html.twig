@@ -1,0 +1,23 @@
+<div id="minuteBackgroundOverlay">
+    <div id="minute">
+        <p>Saisir la minute (ex: "43", "90+2")</p>
+        <input id="minuteInput"/>
+        <button id="saveMinute">OK</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#saveMinute').click(function () {
+        currentMinute = $('#minuteInput').val().trim();
+        currentMinute = currentMinute.replace(/\s/g,'');
+        $('#minuteBackgroundOverlay').hide();
+        $('#' + currentDiv).show();
+
+        if(currentScreen === 'goalScreen'
+            && currentGoalType != ownGoalKey
+            && currentGoalType != penaltyGoalKey
+        ) {
+            alert('1) Sélectionner le passeur. 2) Sélectionner le buteur. Si pas de passeur, sélectionner deux fois le buteur.');
+        }
+    });
+</script>

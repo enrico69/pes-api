@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="FR">
+<head>
+    {% include 'general/common-header.html.twig' %}
+    <script type="text/javascript">
+        var homeURL = "{{ url('homepage') }}";
+        var gamersEndPoint = "{{ url('homepage') }}api/gamers";
+        var teamsEndPoint = "{{ url('homepage') }}api/teams?page=";
+        var creationSubmitURL = "{{ url('tournament-creation-submit') }}";
+        var tournamentType = "{{ constant('App\\Entity\\Tournament::TYPE_CALCIO') }}";
+        var tournamentTypeKey = "{{ constant('App\\Service\\Tournament\\TournamentFormCreationRequestHandler::TYPE_FIELD') }}";
+        var winnerIdField = "{{ constant('App\\Service\\Tournament\\TournamentFormCreationRequestHandler::WINNER_ID_FIELD') }}";
+        var associationsField = "{{ constant('App\\Service\\Tournament\\TournamentFormCreationRequestHandler::ASSOCIATIONS_ID_FIELD') }}";
+        var forcedIdField = "{{ constant('App\\Service\\Tournament\\TournamentFormCreationRequestHandler::FORCED_TEAM_ID_FIELD') }}";
+    </script>
+    <script src="{{ asset('assets/js/pes/tournament-creation.js') }}"></script>
+</head>
+<body>
+    <div id="content" class="container">
+        <div id="mobile-container">
+            <div id="mobile-container-home"><a href="{{ url('homepage') }}">Retour à l'accueil</a></div>
+            <div id="mobile-container-content">
+                <div id="spinner"><img alt="Chargement" src="{{ asset('assets/images/spinner.gif') }}"/></div>
+                {% include('tournament/selection.html.twig') %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

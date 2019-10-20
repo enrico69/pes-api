@@ -1,0 +1,17 @@
+<div id="screen_goalInfo" class="screen">
+    <button id="goalTypeInGame" class="bigActionButton" data-type="{{ constant('App\\Entity\\Goal::TYPE_INGAME_GOAL') }}" style="background: #1F61A0">But dans le jeu</button>
+    <button id="goalTypePenalty" class="bigActionButton" style="background: grey" data-type="{{ constant('App\\Entity\\Goal::TYPE_PENALTY_GOAL') }}" >Penalty</button>
+    <button id="goalTypeOwn" class="bigActionButton" style="background: #1e7e34" data-type="{{ constant('App\\Entity\\Goal::TYPE_OWN_GOAL') }}" >CSC</button>
+    <button id="goalTypeDirectFK" class="bigActionButton" style="background: #ffc107; color: black;" data-type="{{ constant('App\\Entity\\Goal::TYPE_DIRECT_FREEKICK_GOAL') }}" >Coup franc direct</button>
+    <button id="goalTypeIndirectFK" class="bigActionButton" style="background: red" data-type="{{ constant('App\\Entity\\Goal::TYPE_INDIRECT_FREEKICK_GOAL') }}" >Coup franc indirect</button>
+    <button id="goalTypeCorner" class="bigActionButton" style="background: #5e2ca5" data-type="{{ constant('App\\Entity\\Goal::TYPE_CORNER_GOAL') }}" >Corner</button>
+</div>
+<script type="text/javascript">
+    $( "[id^=goalType]" ).click(function () {
+        currentGoalType = $(this).attr('data-type');
+        currentScreen = 'goalScreen';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_goalInfo').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+</script>

@@ -1,0 +1,49 @@
+<div id="screen_actions" class="screen">
+    <button id="goalAction" class="bigActionButton" style="background: #1F61A0">But</button>
+    <button id="substitutionAction" class="bigActionButton" style="background: grey">Remplacement</button>
+    <button id="addWoundedAction" class="bigActionButton" style="background: #1e7e34">Blessure</button>
+    <button id="yellowCardAction" class="bigActionButton" style="background: #ffc107; color: black;">Carton jaune</button>
+    <button id="redCardAction" class="bigActionButton" style="background: red">Carton rouge</button>
+    <button id="eventsAction" class="bigActionButton" style="background: #5e2ca5">Événement</button>
+    <p id="matchSavingButtonArea"><button id="matchSavingButton">Terminer le match</button></p>
+</div>
+
+<script type="text/javascript">
+    $('#eventsAction').click(function () {
+        $('#screen_actions').hide();
+        $('#screen_eventInfo').show();
+    });
+
+    $('#goalAction').click(function () {
+        $('#screen_actions').hide();
+        $('#screen_goalInfo').show();
+    });
+
+    $('#addWoundedAction').click(function () {
+        currentScreen = 'woundedScreen';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_actions').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+
+    $('#substitutionAction').click(function () {
+        currentScreen = 'substitution';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_actions').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+
+    $('#yellowCardAction').click(function () {
+        currentScreen = 'yellowCardScreen';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_actions').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+
+    $('#redCardAction').click(function () {
+        currentScreen = 'redCardScreen';
+        currentDiv = 'screen_playersSelection';
+        $('#screen_actions').hide();
+        $('#minuteBackgroundOverlay').show();
+    });
+</script>

@@ -1,0 +1,335 @@
+<div class="screen" id="screen_playersSelection">
+    <p class="titleBar">Sélection des joueurs de l'équipe "{{ match.team1.name }}" :</p>
+    <p class="titleSubBar">Joueurs disponibles:</p>
+    <div id="playerList_{{ match.team1.id }}" class="playerList">
+        {% for player in playersTeam1 %}
+            <button class="playerButton" id="selectPlayerList_{{ match.team1.id }}"  data-status="listed" value="{{ player.id }}">{{ player.lastName }} {{ player.firstName }}</button>
+        {% endfor %}
+    </div>
+
+    <p class="titleSubBar">Joueurs sélectionnés:</p>
+    <div id="playerSelected_{{ match.team1.id }}"  class="playerList" style="background: #1e7e34;">
+    </div>
+
+    <p class="titleBar" style="margin-top: 50px;">Sélection des joueurs de l'équipe "{{ match.team2.name }}" :</p>
+    <p class="titleSubBar">Joueurs disponibles:</p>
+    <div id="playerList_{{ match.team2.id }}"  class="playerList">
+        {% for player in playersTeam2 %}
+            <button class="playerButton" id="selectPlayerList_{{ match.team2.id }}" data-status="listed"  value="{{ player.id }}">{{ player.lastName }} {{ player.firstName }}</button>
+        {% endfor %}
+    </div>
+
+    <p class="titleSubBar">Joueurs sélectionnés:</p>
+    <div id="playerSelected_{{ match.team2.id }}"  class="playerList" style="background: #1e7e34;">
+    </div>
+
+    <button id="startGame" class="actionButton">Commencer le match</button>
+    <button id="closePlayerScreen" style="display:none;" class="actionButton">Annuler</button>
+</div>
+
+<script type="text/javascript">
+    var countPlayerHome = 0;
+    var countPlayerAway = 0;
+
+    var homePlayersSubstitutedCount = 0;
+    var awayPlayersSubstitutedCount = 0;
+
+    var currentPlayer = null;
+    var currentPlayerTeamKey = null;
+    var substituteTeamKey = null;
+
+    var assistPlayer = null;
+    var assistPlayerTeamId = null;
+
+    // Listen for the click on a player in the screen
+    $( "[id^=selectPlayerList_]" ).click(function () {
+        var teamId = $(this).attr('id').substring(17);
+        var playerId = $(this).val();
+        var status = $(this).attr('data-status');
+
+        if (teamId == matchData[teamHomeKey]) {
+            var teamKey = compoHomeKey;
+        } else {
+            var teamKey = compoAwayKey;
+        }
+
+        if(currentScreen === 'teamSelection') {
+            handlePlayerSelection($(this), teamId, playerId, status, teamKey);
+        } else if(currentScreen === 'substitution') {
+            handlePlayerSubstitution($(this), teamId, playerId, status, teamKey);
+        } else if(currentScreen === 'yellowCardScreen') {
+            handleYellowCard($(this), teamId, playerId, status);
+        } else if(currentScreen === 'redCardScreen') {
+            if (status == 'listed') {
+                alert("Impossible de mettre un carton rouge à un joueur qui n'est pas sur le terrain. Recommencez ou annulez..");
+                return;
+            }
+
+            expelPlayer($(this), teamId, playerId);
+            gotoActionScreen();
+        } else if(currentScreen === 'woundedScreen') {
+            woundedPlayer($(this), teamId, playerId, status);
+        } else if (currentScreen === 'goalScreen') {
+            handleGoal($(this), teamId, playerId, status);
+        } else if (currentScreen === 'eventScreen') {
+            handleEvent($(this), teamId, playerId, status);
+        } else {
+            alert('Ecran inconnu : ' + currentScreen);
+        }
+    });
+
+    /**
+     * Handle events
+     */
+    function handleEvent(playerElement, teamId, playerId, status) {
+        if (status == 'listed') {
+            alert("Le joueur doit être sur le terrain pour qu'un évènement le concerne. Recommencez ou annulez..");
+            return;
+        }
+
+        eventCount++;
+        matchData[eventsKey][eventCount] = {[typeKey] : currentEventType, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        gotoActionScreen();
+    }
+
+    /**
+     * Handle goals
+     */
+    function handleGoal(playerElement, teamId, playerId, status) {
+        if (status == 'listed') {
+            alert("Le joueur doit être sur le terrain pour marquer ou faire une passe. Recommencez ou annulez..");
+            return;
+        }
+
+        // Some goals can't have an assist
+        if (currentGoalType != ownGoalKey && currentGoalType != penaltyGoalKey) {
+            if (assistPlayer == null) {
+                assistPlayer = playerElement;
+                assistPlayerTeamId = teamId;
+                return;
+            }
+
+            if (assistPlayerTeamId != teamId) {
+                alert('Le passeur doit être dans la même équipe que le buteur! Recommencez ou annulez...');
+                assistPlayer = null;
+                assistPlayerTeamId = null;
+                return;
+            }
+        }
+
+        var goalTeam = teamId;
+        if (currentGoalType === ownGoalKey) {
+            if (teamId == matchData[teamHomeKey]) {
+                goalCountAway++;
+                goalTeam = matchData[teamAwayKey];
+            } else {
+                goalCountHome++;
+                goalTeam = matchData[teamHomeKey];
+            }
+        } else {
+            if (teamId == matchData[teamHomeKey]) {
+                goalCountHome++;
+            } else {
+                goalCountAway++;
+            }
+        }
+        var goalRank = goalCountHome + "-" + goalCountAway;
+
+        matchData[goalKey][goalRank] = {};
+        matchData[goalKey][goalRank][teamIdKey] = goalTeam;
+        matchData[goalKey][goalRank][playerIdKey] = playerId;
+        matchData[goalKey][goalRank][happenedAtKey] = currentMinute;
+        matchData[goalKey][goalRank][goalTypeKey] = currentGoalType;
+
+        // Some goals can't have an assist
+        if (currentGoalType != ownGoalKey && currentGoalType != penaltyGoalKey) {
+            if (assistPlayer.val() != playerElement.val()) {
+                matchData[goalKey][goalRank][assistPlayerIdKey] = assistPlayer.val();
+            }
+        }
+
+        gotoActionScreen();
+    }
+
+    /**
+     * Handle the player yellow card
+     */
+    function woundedPlayer(playerElement, teamId, playerId, status) {
+        if (status == 'listed') {
+            alert("Impossible de blesser un joueur qui n'est pas sur le terrain. Recommencez ou annulez..");
+            return;
+        }
+
+        eventCount++;
+        matchData[eventsKey][eventCount] = {[typeKey] : woundedKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        gotoActionScreen();
+    }
+
+    /**
+     * Handle the player yellow card
+     */
+    function handleYellowCard(playerElement, teamId, playerId, status) {
+        if (status == 'listed') {
+            alert("Impossible de mettre un carton jaune à un joueur qui n'est pas sur le terrain. Recommencez ou annulez..");
+            return;
+        }
+
+        // Check if the player already have a yellow card
+        var isSecondCard = false;
+        console.log('Checking if is a second card.');
+        $.each(matchData[eventsKey], function(index, event) {
+            if (event[typeKey] == yellowcardsKey && event[playerIdKey] == playerId) {
+                isSecondCard = true;
+                console.log('Is second yellow card...');
+            }
+        });
+
+        eventCount++;
+        matchData[eventsKey][eventCount] = {[typeKey] : yellowcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+
+        if(isSecondCard) {
+            expelPlayer(playerElement, teamId, playerId);
+            alert('Le joueur est automatiquement expulsé!');
+        }
+
+        gotoActionScreen();
+    }
+
+    /**
+     * Handle the player substitution
+     */
+    function handlePlayerSubstitution(playerElement, teamId, playerId, status, teamKey) {
+        // First call
+        if (currentPlayer == null) {
+            currentPlayer = playerElement;
+            currentPlayerTeamKey = teamKey;
+            return;
+        }
+
+        // Second call
+        substituteTeamKey = teamKey;
+
+        if (currentPlayerTeamKey != substituteTeamKey) {
+            alert("Les deux joueurs doivent être de la même équipe! Recommencez ou annulez...");
+            currentPlayer = null;
+            currentPlayerTeamKey = null;
+            substituteTeamKey = null;
+        }
+
+        if (status != 'listed') {
+            alert("Le joueur entrant ne doit pas déjà être sur le terrain! Recommencez ou annulez...");
+            currentPlayer = null;
+            currentPlayerTeamKey = null;
+            substituteTeamKey = null;
+            return;
+        }
+
+        if ((teamKey == compoHomeKey && homePlayersSubstitutedCount == 3)
+            || (teamKey == compoAwayKey && awayPlayersSubstitutedCount == 3)
+        ) {
+            alert('Vous ne pouvez plus faire de changement!');
+            currentPlayer = null;
+            currentPlayerTeamKey = null;
+            substituteTeamKey = null;
+            return;
+        }
+
+        currentPlayer.remove();
+        playerElement.detach().appendTo('#playerSelected_' + teamId);
+        playerElement.attr('data-status', '');
+        if (teamKey == compoHomeKey) {
+            homePlayersSubstitutedCount++;
+        } else {
+            awayPlayersSubstitutedCount++;
+        }
+
+        var newPlayer = {[playerIdKey]: playerId};
+        matchData[teamKey][playerId] = newPlayer;
+        var substitutedPlayerId = currentPlayer.val();
+        matchData[teamKey][substitutedPlayerId][replacedAtKey] = currentMinute;
+        matchData[teamKey][substitutedPlayerId][replacedByKey] = playerId;
+
+        gotoActionScreen();
+    }
+
+    /**
+     * This method is used to handle player selection before
+     * starting the match;
+     *
+     * @param playerElement
+     * @param teamId
+     * @param playerId
+     * @param status
+     * @param teamKey
+     */
+    function handlePlayerSelection(playerElement, teamId, playerId, status, teamKey) {
+        var player = {[playerIdKey]: playerId};
+
+        if (status == 'listed') {
+            if ((teamKey == compoHomeKey && countPlayerHome == 11)
+                || (teamKey == compoAwayKey && countPlayerAway == 11)
+            ) {
+                alert('Max 11 joueurs par équipe...');
+                return;
+            }
+
+            playerElement.detach().appendTo('#playerSelected_' + teamId);
+            playerElement.attr('data-status', 'selected');
+            matchData[teamKey][playerId] = player;
+
+            if (teamKey == compoHomeKey) {
+                countPlayerHome++;
+            } else {
+                countPlayerAway++;
+            }
+        } else {
+            playerElement.detach().appendTo('#playerList_' + teamId);
+            playerElement.attr('data-status', 'listed');
+            delete matchData[teamKey][playerId];
+
+            if (teamKey == compoHomeKey) {
+                countPlayerHome--;
+            } else {
+                countPlayerAway--;
+            }
+        }
+    }
+
+    // Hide this screen and go to the action screen
+    function gotoActionScreen() {
+        currentPlayer = null;
+        currentPlayerTeamKey = null;
+        substituteTeamKey = null;
+        assistPlayer = null;
+        assistPlayerTeamId = null;
+        currentGoalType = null;
+        currentEventType = null;
+
+        $('#screen_playersSelection').hide();
+        currentScreen = 'actions';
+        $('#screen_actions').show();
+    }
+
+    // Start the game: go tot the action screen
+    $('#startGame').click(function () {
+        if (countPlayerHome == 11 && countPlayerAway == 11) {
+            $('#startGame').hide();
+            $('#closePlayerScreen').show();
+            gotoActionScreen();
+        } else {
+            var msg = "Il faut 11 joueurs par équipe. Actuellement l'équipe qui recoit " +
+                "en compte " + countPlayerHome + " et celle qui se déplace en compte " + countPlayerAway;
+            alert(msg);
+        }
+    });
+
+    function expelPlayer(playerToExpel, teamId, playerId) {
+        eventCount++;
+        playerToExpel.remove();
+        matchData[eventsKey][eventCount] = {[typeKey] : redcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+    }
+
+    $('#closePlayerScreen').click(function () {
+        gotoActionScreen();
+    });
+</script>

@@ -1,0 +1,126 @@
+#mobile-container {
+    width: 100%;
+    height: 100%;
+    border:1px solid #000000;
+}
+
+#mobile-container-home {
+    width: 100%;
+    height: 20px;
+    background: #dbe1ec;
+    text-align: center;
+    line-height: 20px;
+}
+
+#mobile-container-content {
+    width: 100%;
+    height: 100%;
+}
+
+#spinner {
+    width: 256px;
+    height: 256px;
+    margin: auto;
+}
+
+#gamerForm {
+    display: none;
+}
+
+#tournamentCreationButton {
+    color: white;
+    font-weight: bold;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#4096ee+0,4096ee+100;Blue+Flat+%232 */
+    background: #4096ee; /* Old browsers */
+    background: -moz-linear-gradient(top, #4096ee 0%, #4096ee 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #4096ee 0%,#4096ee 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #4096ee 0%,#4096ee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#4096ee',GradientType=0 ); /* IE6-9 */
+}
+
+.screen {
+    display: none;
+}
+
+.playerList {
+    width: 450px;
+    height: 150px;
+    overflow: scroll;
+}
+
+.playerButton {
+    margin-left: 5px;
+    margin-top: 5px;
+    background: #0B7FC7;
+    color: white;
+}
+
+.actionButton {
+    margin-left: 5px;
+    margin-top: 5px;
+    background: #20c997;
+}
+
+.dropdownPes {
+    border:1px solid #000000;
+    background: #61affe;
+}
+
+.titleBar {
+    border:1px solid #000000;
+    background: #770088;
+    font-weight: bold;
+    color: white;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.titleSubBar {
+    border:1px solid #000000;
+    background: #008855;
+    font-weight: bold;
+    color: white;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.bigActionButton {
+    margin-left: 5px;
+    margin-top: 5px;
+    color: white;
+    width: 150px;
+    height: 120px;
+}
+
+#minuteBackgroundOverlay {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #000000;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+#minute {
+    text-align: center;
+    color: #007bff;
+}
+
+#saveMinute {
+    background: #007bff;
+    color: black;
+}
+
+#matchSavingButtonArea {
+    text-align: center;
+    margin-top: 50px;
+}
+
+#matchSavingButton {
+    background: #1C92A9;
+    color: white;
+    font-weight: bold;
+}

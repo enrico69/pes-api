@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="FR">
+    <head>
+        {% include 'general/common-header.html.twig' %}
+    </head>
+    <body>
+        {{ include('general/menu.html.twig') }}
+        <div id="content" class="container">
+            <h1>{{ screenTitle }}</h1>
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>
