@@ -8,6 +8,7 @@ namespace App\Service\Tournament;
 
 use App\Entity\Tournament;
 use App\Factory\GamerTeamAssociationCollectionFactory;
+use App\Factory\Tournament\FourCupFactory;
 use App\Factory\Tournament\FourTeamsCalcioFactory;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,10 +26,13 @@ class TournamentCreationManager
     private $entityManager;
     /** @var \App\Factory\TournamentFactory */
     private $tournamentFactory;
+    /** @var \App\Factory\Tournament\FourCupFactory */
+    private $fourCupFactory;
 
     public function __construct(
         GamerTeamAssociationCollectionFactory $gamerTeamAssociationCollectionFactory,
         FourTeamsCalcioFactory $fourTeamsCalcioFactory,
+        FourCupFactory $fourCupFactory,
         TeamRepository $teamRepository,
         EntityManagerInterface $entityManager,
         TournamentFactory $tournamentFactory
@@ -38,6 +42,7 @@ class TournamentCreationManager
         $this->teamRepository = $teamRepository;
         $this->entityManager = $entityManager;
         $this->tournamentFactory = $tournamentFactory;
+        $this->fourCupFactory = $fourCupFactory;
     }
 
     /**
@@ -60,17 +65,28 @@ class TournamentCreationManager
         $associationCollection->lock();
         $tournament = $this->tournamentFactory->generate($type);
 
+        // Here, adding the cup should be optional
+        $cup = $this->tournamentFactory->generate(Tournament::TYPE_CALCIO_CUP);
+
         switch ($type) {
             case Tournament::TYPE_CALCIO:
                 $matches = $this->fourTeamsCalcioFactory->generate($associationCollection, $winnerTeam);
+                // Here. Should be optional
+                $cupMatches = $this->fourCupFactory->generate($associationCollection);
                 break;
             default:
                 throw new \RuntimeException("Tournament type '{$type}' is unknown!");
         }
 
         $tournament->setMatches($matches->getMatches());
+        $cup->setMatches($cupMatches->getMatches());
         $this->entityManager->persist($tournament);
+        $this->entityManager->persist($cup);
         $this->entityManager->flush();
+
+        foreach ($cupMatches->getMatches() as $match) {
+            $match->setTournament($cup);
+        }
         foreach ($matches->getMatches() as $match) {
             $match->setTournament($tournament);
         }

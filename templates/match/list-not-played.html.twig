@@ -6,7 +6,7 @@
     <ul>
         {% for match in matches %}
             <li>
-                {{ match.type|capitalize }} : {{ match.team1.name }} - {{ match.team2.name }}
+                {{ constant('App\\Entity\\Match::TYPES') [match.type] }} : {{ match.team1.name }} - {{ match.team2.name }}
                 -- <a href="{{ url('play-match', {'id': match.id}) }}">Jouer</a>
             </li>
         {% endfor %}

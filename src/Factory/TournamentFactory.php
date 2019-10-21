@@ -25,6 +25,9 @@ class TournamentFactory
             case Tournament::TYPE_CALCIO:
                 $tournament->setType(Tournament::TYPE_CALCIO);
                 break;
+            case Tournament::TYPE_CALCIO_CUP:
+                $tournament->setType(Tournament::TYPE_CALCIO_CUP);
+                break;
             default:
                 throw new \RuntimeException("Tournament type '{$type}' is unknown!");
         }

@@ -32,10 +32,10 @@ class Match
     public const TYPE_CUP_SECOND_LEG = 'cup_second_leg';
 
     public const TYPES = [
-        self::TYPE_CHAMPIONSHIP,
-        self::TYPE_CUP_FIRST_LEG,
-        self::TYPE_CUP_SECOND_LEG,
-        self::TYPE_CUP_SIMPLE
+        self::TYPE_CHAMPIONSHIP => 'Championnat',
+        self::TYPE_CUP_FIRST_LEG => 'Coupe match aller',
+        self::TYPE_CUP_SECOND_LEG => 'Coupe match retour',
+        self::TYPE_CUP_SIMPLE => 'Coupe'
     ];
 
     /**
