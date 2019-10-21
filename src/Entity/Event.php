@@ -35,6 +35,7 @@ class Event
     public const TYPE_RED_CARD = 'red_card';
     public const PEN_SHOOTOUTS_SCORED_KEY = 'penalty_shootout_scored';
     public const PEN_SHOOTOUTS_MISSED_KEY = 'penalty_shootout_missed';
+    public const TYPE_PLAYER_OUT_WITHOUT_SUB = 'player_out_without_sub';
 
     public const ALLOWED_TYPES = [
         self::TYPE_WOUND,
@@ -45,6 +46,7 @@ class Event
         self::TYPE_POST_HIT,
         self::PEN_SHOOTOUTS_SCORED_KEY,
         self::PEN_SHOOTOUTS_MISSED_KEY,
+        self::TYPE_PLAYER_OUT_WITHOUT_SUB
     ];
 
     /**

@@ -4,6 +4,7 @@
     <button id="matchEventPostHit" class="bigActionButton" style="background: #1e7e34" data-type="{{ constant('App\\Entity\\Event::TYPE_POST_HIT') }}" >Tir sur le poteau</button>
     <button id="matchEventScoredPenaltyShootout" class="bigActionButton" style="background: #ffc107; color: black;" data-type="{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_SCORED_KEY') }}" >Tir au but réussi</button>
     <button id="matchEventMissedPenaltyShootout" class="bigActionButton" style="background: red" data-type="{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_MISSED_KEY') }}" >Tir au but raté</button>
+    <button id="matchEventPlayerOutWithoutSub" class="bigActionButton" style="background: #5e2ca5" data-type="{{ constant('App\\Entity\\Event::TYPE_PLAYER_OUT_WITHOUT_SUB') }}" >Sortie sans remp.</button>
 </div>
 <script type="text/javascript">
     $( "[id^=matchEvent]" ).click(function () {

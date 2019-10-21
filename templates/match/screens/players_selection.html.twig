@@ -89,6 +89,11 @@
 
         eventCount++;
         matchData[eventsKey][eventCount] = {[typeKey] : currentEventType, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+
+        if (currentEventType === eventPlayerOutWithoutSubstitute) {
+            playerElement.remove();
+        }
+
         gotoActionScreen();
     }
 

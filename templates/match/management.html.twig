@@ -30,11 +30,7 @@
         var redcardsKey = "{{ constant('App\\Entity\\Event::TYPE_RED_CARD') }}";
         var yellowcardsKey = "{{ constant('App\\Entity\\Event::TYPE_YELLOW_CARD') }}";
         var woundedKey = "{{ constant('App\\Entity\\Event::TYPE_WOUND') }}";
-        var eventOffsideGoalKey = "{{ constant('App\\Entity\\Event::TYPE_OFFSIDE_GOAL') }}";
-        var eventPostHitKey = "{{ constant('App\\Entity\\Event::TYPE_POST_HIT') }}";
-        var eventMissedPenaltyKey = "{{ constant('App\\Entity\\Event::TYPE_MISSED_PENALTY') }}";
-        var eventScoredPenaltyShootoutKey = "{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_SCORED_KEY') }}";
-        var eventMissedPenaltyShootoutKey = "{{ constant('App\\Entity\\Event::PEN_SHOOTOUTS_MISSED_KEY') }}";
+        var eventPlayerOutWithoutSubstitute = "{{ constant('App\\Entity\\Event::TYPE_PLAYER_OUT_WITHOUT_SUB') }}";
 
         // Game data
         var team1Id = {{ match.team1.id }};
