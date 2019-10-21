@@ -6,6 +6,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/config/bootstrap.php';
 
+// Custom IP access control
+if ($_SERVER['APP_ENV'] !== 'dev') {
+    if (isset($_SERVER['HTTP_CLIENT_IP'])
+        || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+        || !(in_array(@$_SERVER['REMOTE_ADDR'], [$_SERVER['AUTH_IP']]) || php_sapi_name() === 'cli-server')
+    ) {
+        header('HTTP/1.0 403 Forbidden');
+        exit('You are not allowed to access this file.');
+    }
+}
+// End custom IP access control
+
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
