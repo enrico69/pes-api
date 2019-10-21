@@ -13,6 +13,7 @@ use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Psr\Log\LoggerInterface;
@@ -74,6 +75,10 @@ class Management extends  AbstractController
      */
     public function play(Match $match) : Response
     {
+        if ($match->getDate()) {
+            throw new NotFoundHttpException('Ce match a déjà été joué!');
+        }
+
         $stadiums = $this->getDoctrine()
             ->getRepository(Stadium::class)
             ->findAll();
