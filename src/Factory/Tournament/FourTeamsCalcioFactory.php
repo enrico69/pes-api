@@ -173,7 +173,7 @@ class FourTeamsCalcioFactory
         foreach ($matchesObjs as $key => $matchObj) {
             /** @var \App\Entity\Match $matchObj */
             $team1Id = $matchObj->getTeam1()->getId();
-            $team2Id = $matchObj->getTeam1()->getId();
+            $team2Id = $matchObj->getTeam2()->getId();
 
             if ($team1Id === $j2m1T1Id || $team1Id === $j2m1T2Id
                 || $team2Id === $j2m1T1Id || $team2Id === $j2m1T2Id
