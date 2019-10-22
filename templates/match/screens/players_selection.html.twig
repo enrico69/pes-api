@@ -88,7 +88,7 @@
         }
 
         eventCount++;
-        matchData[eventsKey][eventCount] = {[typeKey] : currentEventType, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        matchData[eventsKey][eventCount] = {[typeKey] : currentEventType, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute, [eventOrderKey]: currentMinuteOrder};
 
         if (currentEventType === eventPlayerOutWithoutSubstitute) {
             playerElement.remove();
@@ -140,11 +140,13 @@
         }
         var goalRank = goalCountHome + "-" + goalCountAway;
 
+        setCurrentMinuteOrder();
         matchData[goalKey][goalRank] = {};
         matchData[goalKey][goalRank][teamIdKey] = goalTeam;
         matchData[goalKey][goalRank][playerIdKey] = playerId;
         matchData[goalKey][goalRank][happenedAtKey] = currentMinute;
         matchData[goalKey][goalRank][goalTypeKey] = currentGoalType;
+        matchData[goalKey][goalRank][eventOrderKey]= currentMinuteOrder;
 
         // Some goals can't have an assist
         if (currentGoalType != ownGoalKey && currentGoalType != penaltyGoalKey) {
@@ -166,7 +168,8 @@
         }
 
         eventCount++;
-        matchData[eventsKey][eventCount] = {[typeKey] : woundedKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        setCurrentMinuteOrder();
+        matchData[eventsKey][eventCount] = {[typeKey] : woundedKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute, [eventOrderKey]: currentMinuteOrder};
         gotoActionScreen();
     }
 
@@ -190,7 +193,8 @@
         });
 
         eventCount++;
-        matchData[eventsKey][eventCount] = {[typeKey] : yellowcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        setCurrentMinuteOrder();
+        matchData[eventsKey][eventCount] = {[typeKey] : yellowcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute, [eventOrderKey]: currentMinuteOrder};
 
         if(isSecondCard) {
             expelPlayer(playerElement, teamId, playerId);
@@ -248,11 +252,13 @@
             awayPlayersSubstitutedCount++;
         }
 
+        setCurrentMinuteOrder();
         var newPlayer = {[playerIdKey]: playerId};
         matchData[teamKey][playerId] = newPlayer;
         var substitutedPlayerId = currentPlayer.val();
         matchData[teamKey][substitutedPlayerId][replacedAtKey] = currentMinute;
         matchData[teamKey][substitutedPlayerId][replacedByKey] = playerId;
+        matchData[teamKey][substitutedPlayerId][eventOrderKey] = currentMinuteOrder;
 
         gotoActionScreen();
     }
@@ -330,8 +336,9 @@
 
     function expelPlayer(playerToExpel, teamId, playerId) {
         eventCount++;
+        setCurrentMinuteOrder();
         playerToExpel.remove();
-        matchData[eventsKey][eventCount] = {[typeKey] : redcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute};
+        matchData[eventsKey][eventCount] = {[typeKey] : redcardsKey, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute, [eventOrderKey]: currentMinuteOrder};
     }
 
     $('#closePlayerScreen').click(function () {

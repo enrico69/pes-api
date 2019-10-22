@@ -44,6 +44,7 @@ class MatchManagementRequestHandler
     public const COMMENTS_KEY = 'comments';
 
     public const TYPE_KEY = 'type';
+    public const ORDER_KEY = 'order';
 
     /** @var \Symfony\Component\HttpFoundation\RequestStack */
     private $request;
@@ -281,6 +282,12 @@ class MatchManagementRequestHandler
                 $goal->setAssist($playersObjs[$assistPlayerId]);
             }
 
+            if (empty($entry[self::ORDER_KEY])) {
+                $this->raiseError('Goal: missing order key');
+            }
+            $order = (int) $entry[self::ORDER_KEY];
+            $goal->setOrder($order);
+
             $goals[] = $goal;
         }
 
@@ -328,7 +335,15 @@ class MatchManagementRequestHandler
         $minute = explode('+', $player[self::REPLACED_AT_KEY]);
         $this->validateMinute($minute, 'Substitution');
 
-        return [self::REPLACED_BY_KEY => (int) $player[self::REPLACED_BY_KEY], self::REPLACED_AT_KEY => $player[self::REPLACED_AT_KEY]];
+        if (empty($player[self::ORDER_KEY])) {
+            $this->raiseError('Replacement: missing order key');
+        }
+
+        return [
+            self::REPLACED_BY_KEY => (int) $player[self::REPLACED_BY_KEY],
+            self::REPLACED_AT_KEY => $player[self::REPLACED_AT_KEY],
+            self::ORDER_KEY => (int) $player[self::ORDER_KEY]
+        ];
     }
 
     private function validateMinute(array $minute, string $theme): void
@@ -360,6 +375,8 @@ class MatchManagementRequestHandler
             if (!empty($playerInfo[self::REPLACED_AT_KEY])) {
                 $appearance->setReplacedAt($playerInfo[self::REPLACED_AT_KEY]);
                 $appearance->setReplacedBy((int) $playerInfo[self::REPLACED_BY_KEY]);
+                $order = (int) $playerInfo[self::ORDER_KEY];
+                $appearance->setOrder($order);
             }
             $appearance->setMatch($match);
 
@@ -417,6 +434,12 @@ class MatchManagementRequestHandler
                 $this->raiseError('Event type unknown: '.$element[self::TYPE_KEY]);
             }
             $event->setType($element[self::TYPE_KEY]);
+
+            if (empty($element[self::ORDER_KEY])) {
+                $this->raiseError('Event: missing order key');
+            }
+            $order = (int) $element[self::ORDER_KEY];
+            $event->setOrder($order);
 
             $events[] = $event;
         }

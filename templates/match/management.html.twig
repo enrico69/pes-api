@@ -31,6 +31,7 @@
         var yellowcardsKey = "{{ constant('App\\Entity\\Event::TYPE_YELLOW_CARD') }}";
         var woundedKey = "{{ constant('App\\Entity\\Event::TYPE_WOUND') }}";
         var eventPlayerOutWithoutSubstitute = "{{ constant('App\\Entity\\Event::TYPE_PLAYER_OUT_WITHOUT_SUB') }}";
+        var eventOrderKey = "{{ constant('App\\Service\\Match\\MatchManagementRequestHandler::ORDER_KEY') }}";
 
         // Game data
         var team1Id = {{ match.team1.id }};
@@ -44,12 +45,23 @@
         matchData[commentsKey] = '';
         matchData[goalKey] = {};
         var currentMinute;
+        var previousMinute;
+        var currentMinuteOrder = 0;
         var currentScreen;
         var currentDiv;
         var currentGoalType;
         var goalCountHome = 0;
         var goalCountAway = 0;
         var currentEventType;
+
+        function setCurrentMinuteOrder() {
+            if (currentMinute !== previousMinute) {
+                previousMinute = currentMinute;
+                currentMinuteOrder = 1;
+            } else {
+                currentMinuteOrder++;
+            }
+        }
     </script>
     <script src="{{ asset('assets/js/pes/match-management.js') }}"></script>
 </head>

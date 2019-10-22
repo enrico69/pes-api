@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use App\Traits\OrderTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
  */
 class Goal
 {
+    use OrderTrait;
+
     public const TYPE_INGAME_GOAL = 'ingame_goal';
     public const TYPE_PENALTY_GOAL = 'penalty_goal';
     public const TYPE_OWN_GOAL = 'own_goal';

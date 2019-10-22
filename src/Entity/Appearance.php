@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use App\Traits\OrderTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
  */
 class Appearance
 {
+    use OrderTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

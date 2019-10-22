@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use App\Traits\OrderTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,8 @@ use Doctrine\ORM\Mapping\ManyToOne;
  */
 class Event
 {
+    use OrderTrait;
+
     public const TYPE_MISSED_PENALTY = 'missed_penalty';
     public const TYPE_OFFSIDE_GOAL = 'offside_goal';
     public const TYPE_WOUND = 'wounded';

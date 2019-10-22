@@ -17,7 +17,6 @@ function pleaseWait(wait) {
 }
 
 function handleSubmission() {
-    $('#matchSavingButton').hide();
     var payload = {};
     payload['matchData'] = matchData;
     console.log(matchData);
