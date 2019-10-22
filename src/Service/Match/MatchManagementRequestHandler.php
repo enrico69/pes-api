@@ -342,7 +342,7 @@ class MatchManagementRequestHandler
         return [
             self::REPLACED_BY_KEY => (int) $player[self::REPLACED_BY_KEY],
             self::REPLACED_AT_KEY => $player[self::REPLACED_AT_KEY],
-            self::ORDER_KEY => (int) $player[self::ORDER_KEY]
+            self::ORDER_KEY => (int) $player[self::ORDER_KEY],
         ];
     }
 
