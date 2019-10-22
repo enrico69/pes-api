@@ -8,7 +8,6 @@ namespace App\Factory\Tournament;
 
 use App\Entity\Match;
 use App\Entity\Gamer;
-use App\Entity\Team;
 use App\Model\GamerTeamAssociationCollection;
 use App\Model\MatchCollection;
 
@@ -29,14 +28,14 @@ class FourCupFactory
             throw new \LogicException('The collection is not locked!');
         }
 
-        if (\count($gamerTeamAssociationCollection) !== 4) {
+        if (4 !== \count($gamerTeamAssociationCollection)) {
             throw new \LogicException('The collection does not contain 4 associations!');
         }
 
         $this->gamerTeamAssociationCollection = $gamerTeamAssociationCollection;
 
         // Damien is here AND one gamer is managed by the computer.
-        if ($gamerTeamAssociationCollection->getComputerCount() === 1
+        if (1 === $gamerTeamAssociationCollection->getComputerCount()
             && $gamerTeamAssociationCollection->getDamienTeamId()) {
             $this->isSpecial = true;
         }
@@ -78,7 +77,6 @@ class FourCupFactory
         return $teams;
     }
 
-
     /**
      * @return \App\Model\MatchCollection
      */
@@ -98,9 +96,7 @@ class FourCupFactory
             ->getRandomAssociation([$match1Teams[0]->getId(), $match1Teams[1]->getId(), $match2Team1->getId()])
             ->getTeam();
 
-
         $matchCollection = new MatchCollection();
-
 
         $matchObj1 = new Match();
         $matchObj1->setType(Match::TYPE_CUP_FIRST_LEG);

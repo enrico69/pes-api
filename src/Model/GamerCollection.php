@@ -6,7 +6,6 @@
 
 namespace App\Model;
 
-
 use App\Entity\Gamer;
 
 class GamerCollection implements \Iterator, \Countable, \ArrayAccess
@@ -20,7 +19,7 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
     private $computerCount = 0;
     private $isDamienHere = false;
 
-    public function add(Gamer $gamer) : self
+    public function add(Gamer $gamer): self
     {
         if ($this->isLocked()) {
             throw new \LogicException('Collection is locked. You cannot add more gamer!');
@@ -35,8 +34,8 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
         $this->gamerIds[] = $gamerId;
         $this->gamers[$gamerId] = $gamer;
 
-        if ($gamer->getType() === Gamer::TYPE_COMPUTER) {
-            $this->computerCount++;
+        if (Gamer::TYPE_COMPUTER === $gamer->getType()) {
+            ++$this->computerCount;
         }
 
         if ($gamerId === Gamer::getDamienId()) {
@@ -46,22 +45,22 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
         return $this;
     }
 
-    public function isDamienHere() : bool
+    public function isDamienHere(): bool
     {
         return $this->isDamienHere;
     }
 
-    public function getComputerCount() : int
+    public function getComputerCount(): int
     {
         return $this->computerCount;
     }
 
-    public function isLocked() : bool
+    public function isLocked(): bool
     {
         return $this->locked;
     }
 
-    public function lock() : self
+    public function lock(): self
     {
         $this->locked = true;
 
@@ -71,21 +70,21 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
     /**
      * @return \App\Entity\Gamer[]
      */
-    public function getGamers() : array
+    public function getGamers(): array
     {
         return $this->gamers;
     }
 
     /**
-     * Return the current element
+     * Return the current element.
      */
-    public function current() : Gamer
+    public function current(): Gamer
     {
         return \current($this->gamers);
     }
 
     /**
-     * Move forward to next element
+     * Move forward to next element.
      */
     public function next()
     {
@@ -93,53 +92,55 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
-     * Return the key of the current element
+     * Return the key of the current element.
      */
-    public function key() : string
+    public function key(): string
     {
         return \key($this->gamers);
     }
 
     /**
-     * Checks if current position is valid
+     * Checks if current position is valid.
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         $key = \key($this->gamers);
 
-        return ($key !== null && $key !== false);
+        return null !== $key && false !== $key;
     }
 
     /**
-     * Rewind the Iterator to the first element
+     * Rewind the Iterator to the first element.
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         \reset($this->gamers);
     }
 
     /**
-     * Count elements of an object
+     * Count elements of an object.
      */
-    public function count() : int
+    public function count(): int
     {
         return \count($this->getGamers());
     }
 
     /**
      * @param $offset
-     * @return boolean true on success or false on failure.
+     *
+     * @return bool true on success or false on failure
      */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return \array_key_exists($offset, $this->gamers);
     }
 
     /**
      * @param mixed $offset
+     *
      * @return \App\Entity\Gamer
      */
-    public function offsetGet($offset) : Gamer
+    public function offsetGet($offset): Gamer
     {
         return $this->gamers[$offset];
     }
@@ -147,18 +148,16 @@ class GamerCollection implements \Iterator, \Countable, \ArrayAccess
     /**
      * @param mixed $offset
      * @param mixed $value
-     * @return void
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Setting a new gamer is forbidden here');
     }
 
     /**
-     * @param mixed $offset The offset to unset.
-     * @return void
+     * @param mixed $offset the offset to unset
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         throw new \RuntimeException('Unsetting a new gamer is forbidden here');
     }

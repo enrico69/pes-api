@@ -7,13 +7,8 @@
 namespace App\Repository;
 
 use App\Entity\Player;
-use App\Entity\Team;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\DBAL\FetchMode;
 
 class PlayerRepository
 {
@@ -26,16 +21,18 @@ class PlayerRepository
     /** @param \Doctrine\ORM\EntityManagerInterface $entityManager */
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository     = $entityManager->getRepository(Player::class);
-        $this->entityManager  = $entityManager;
+        $this->repository = $entityManager->getRepository(Player::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param int $id
+     *
      * @return \App\Entity\Player
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function getById(int $id) : Player
+    public function getById(int $id): Player
     {
         $player = $this->repository->find($id);
         if (!$player) {
@@ -45,7 +42,7 @@ class PlayerRepository
         return  $player;
     }
 
-    public function getByIds(array $playerIds) : array
+    public function getByIds(array $playerIds): array
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('m');
@@ -59,21 +56,21 @@ class PlayerRepository
 
         $players = [];
         foreach ($result as $player) {
-            /** @var \App\Entity\Player $player */
+            /* @var \App\Entity\Player $player */
             $players[$player->getId()] = $player;
         }
 
         return $players;
     }
 
-    public function getByTeam(int $teamId) : array
+    public function getByTeam(int $teamId): array
     {
         $qb = $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from(Player::class, 'p')
             ->join('p.teams', 't')
             ->addSelect('t')
-            ->where('t.id = ' . $teamId)
+            ->where('t.id = '.$teamId)
             ->orderBy('p.lastName');
 
         return $qb->getQuery()->getResult();

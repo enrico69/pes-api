@@ -3,6 +3,7 @@
  * @author     Eric COURTIAL <e.courtial30@gmail.com>
  * @date       06/09/2019 (dd-mm-YYYY)
  */
+
 namespace App\Model;
 
 use App\Entity\Gamer;
@@ -14,12 +15,12 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
      */
     private $associations = [];
     private $gamerIds = [];
-    private $teamIds =[];
+    private $teamIds = [];
     private $locked = false;
     private $computerCount = 0;
     private $damienTeamId;
 
-    public function add(GamerTeamAssociation $gamerTeamAssociation) : self
+    public function add(GamerTeamAssociation $gamerTeamAssociation): self
     {
         if ($this->isLocked()) {
             throw new \LogicException('Collection is locked. You cannot add more association!');
@@ -38,10 +39,10 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
 
         $this->gamerIds[] = $gamerId;
         $this->teamIds[] = $teamId;
-        $this->associations[$gamerId . $teamId] = $gamerTeamAssociation;
+        $this->associations[$gamerId.$teamId] = $gamerTeamAssociation;
 
-        if ($gamerTeamAssociation->getGamer()->getType() === Gamer::TYPE_COMPUTER) {
-            $this->computerCount++;
+        if (Gamer::TYPE_COMPUTER === $gamerTeamAssociation->getGamer()->getType()) {
+            ++$this->computerCount;
         }
 
         if ($gamerId === Gamer::getDamienId()) {
@@ -51,29 +52,29 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
         return $this;
     }
 
-    public function getDamienTeamId() : ?int
+    public function getDamienTeamId(): ?int
     {
         return $this->damienTeamId;
     }
 
-    public function getComputerCount() : int
+    public function getComputerCount(): int
     {
         return $this->computerCount;
     }
 
-    public function isLocked() : bool
+    public function isLocked(): bool
     {
         return $this->locked;
     }
 
-    public function lock() : self
+    public function lock(): self
     {
         $this->locked = true;
 
         return $this;
     }
 
-    public function getDamienAssociation() : GamerTeamAssociation
+    public function getDamienAssociation(): GamerTeamAssociation
     {
         if (!$this->getDamienTeamId()) {
             throw new \LogicException('Damien is not present!');
@@ -88,7 +89,7 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
         throw new \LogicException('Damien is not present but was supposed to be!');
     }
 
-    public function getAssociationByTeamId(int $teamId) : GamerTeamAssociation
+    public function getAssociationByTeamId(int $teamId): GamerTeamAssociation
     {
         foreach ($this->associations as $association) {
             if ($association->getTeam()->getId() === $teamId) {
@@ -99,7 +100,7 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
         throw new \LogicException("No association found for the team with id '{$teamId}'");
     }
 
-    public function getRandomAssociation(array $excludeTeams = [], ?string $excludedType = null) : GamerTeamAssociation
+    public function getRandomAssociation(array $excludeTeams = [], ?string $excludedType = null): GamerTeamAssociation
     {
         $associationTemp = $this->associations;
 
@@ -112,7 +113,7 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
             }
         }
 
-        if (\count($associationTemp) === 0) {
+        if (0 === \count($associationTemp)) {
             throw new \LogicException('There is no more player in the collection after applying the filters!');
         }
 
@@ -124,21 +125,21 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
     /**
      * @return \App\Model\GamerTeamAssociation[]
      */
-    public function getAssociations() : array
+    public function getAssociations(): array
     {
         return $this->associations;
     }
 
     /**
-     * Return the current element
+     * Return the current element.
      */
-    public function current() : GamerTeamAssociation
+    public function current(): GamerTeamAssociation
     {
         return \current($this->associations);
     }
 
     /**
-     * Move forward to next element
+     * Move forward to next element.
      */
     public function next()
     {
@@ -146,35 +147,35 @@ class GamerTeamAssociationCollection implements \Iterator, \Countable
     }
 
     /**
-     * Return the key of the current element
+     * Return the key of the current element.
      */
-    public function key() : string
+    public function key(): string
     {
         return \key($this->associations);
     }
 
     /**
-     * Checks if current position is valid
+     * Checks if current position is valid.
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         $key = \key($this->associations);
 
-        return ($key !== null && $key !== false);
+        return null !== $key && false !== $key;
     }
 
     /**
-     * Rewind the Iterator to the first element
+     * Rewind the Iterator to the first element.
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         \reset($this->associations);
     }
 
     /**
-     * Count elements of an object
+     * Count elements of an object.
      */
-    public function count() : int
+    public function count(): int
     {
         return \count($this->getAssociations());
     }

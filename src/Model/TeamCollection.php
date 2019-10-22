@@ -17,7 +17,7 @@ class TeamCollection implements \Iterator, \Countable, \ArrayAccess
     private $teamIds = [];
     private $locked = false;
 
-    public function add(Team $team) : self
+    public function add(Team $team): self
     {
         if ($this->isLocked()) {
             throw new \LogicException('Collection is locked. You cannot add more team!');
@@ -35,12 +35,12 @@ class TeamCollection implements \Iterator, \Countable, \ArrayAccess
         return $this;
     }
 
-    public function isLocked() : bool
+    public function isLocked(): bool
     {
         return $this->locked;
     }
 
-    public function lock() : self
+    public function lock(): self
     {
         $this->locked = true;
 
@@ -50,21 +50,21 @@ class TeamCollection implements \Iterator, \Countable, \ArrayAccess
     /**
      * @return \App\Entity\Team[]
      */
-    public function getTeams() : array
+    public function getTeams(): array
     {
         return $this->teams;
     }
 
     /**
-     * Return the current element
+     * Return the current element.
      */
-    public function current() : Team
+    public function current(): Team
     {
         return \current($this->teams);
     }
 
     /**
-     * Move forward to next element
+     * Move forward to next element.
      */
     public function next()
     {
@@ -72,53 +72,55 @@ class TeamCollection implements \Iterator, \Countable, \ArrayAccess
     }
 
     /**
-     * Return the key of the current element
+     * Return the key of the current element.
      */
-    public function key() : string
+    public function key(): string
     {
         return \key($this->teams);
     }
 
     /**
-     * Checks if current position is valid
+     * Checks if current position is valid.
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         $key = \key($this->teams);
 
-        return ($key !== null && $key !== false);
+        return null !== $key && false !== $key;
     }
 
     /**
-     * Rewind the Iterator to the first element
+     * Rewind the Iterator to the first element.
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         \reset($this->teams);
     }
 
     /**
-     * Count elements of an object
+     * Count elements of an object.
      */
-    public function count() : int
+    public function count(): int
     {
         return \count($this->getTeams());
     }
 
     /**
      * @param $offset
-     * @return boolean true on success or false on failure.
+     *
+     * @return bool true on success or false on failure
      */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return \array_key_exists($offset, $this->teams);
     }
 
     /**
      * @param mixed $offset
+     *
      * @return \App\Entity\Team
      */
-    public function offsetGet($offset) : Team
+    public function offsetGet($offset): Team
     {
         return $this->teams[$offset];
     }
@@ -126,18 +128,16 @@ class TeamCollection implements \Iterator, \Countable, \ArrayAccess
     /**
      * @param mixed $offset
      * @param mixed $value
-     * @return void
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Setting a new team is forbidden here');
     }
 
     /**
-     * @param mixed $offset The offset to unset.
-     * @return void
+     * @param mixed $offset the offset to unset
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         throw new \RuntimeException('Unsetting a new team is forbidden here');
     }

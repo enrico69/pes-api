@@ -6,7 +6,6 @@
 
 namespace App\Factory;
 
-
 use App\Repository\GamerRepository;
 use App\Model\GamerCollection;
 
@@ -18,7 +17,8 @@ class GamerCollectionFactory
     /**
      * @param \App\Repository\GamerRepository $gamerRepository
      */
-    public function __construct(GamerRepository $gamerRepository) {
+    public function __construct(GamerRepository $gamerRepository)
+    {
         $this->gamerRepository = $gamerRepository;
     }
 
@@ -27,11 +27,11 @@ class GamerCollectionFactory
      *
      * @return \App\Model\GamerCollection
      */
-    public function createFromArray(array $gamerIds) : GamerCollection
+    public function createFromArray(array $gamerIds): GamerCollection
     {
         foreach ($gamerIds as $gamerId) {
             if (false === filter_var($gamerId, FILTER_VALIDATE_INT)
-                || $gamerId === 0
+                || 0 === $gamerId
             ) {
                 throw new \RuntimeException("Gamer id '{$gamerId}' is not an valid int!");
             }

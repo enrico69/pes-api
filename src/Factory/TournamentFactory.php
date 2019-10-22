@@ -17,7 +17,8 @@ class TournamentFactory
      *
      * @throws \Exception
      */
-    public function generate(string $type) {
+    public function generate(string $type)
+    {
         $tournament = new Tournament();
         $tournament->setCreatedAt(new \DateTime());
 

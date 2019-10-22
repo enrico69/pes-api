@@ -7,11 +7,8 @@
 namespace App\Repository;
 
 use App\Entity\Stadium;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\DBAL\FetchMode;
 
 class StadiumRepository
 {
@@ -24,16 +21,18 @@ class StadiumRepository
     /** @param \Doctrine\ORM\EntityManagerInterface $entityManager */
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository     = $entityManager->getRepository(Stadium::class);
-        $this->entityManager  = $entityManager;
+        $this->repository = $entityManager->getRepository(Stadium::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param int $id
+     *
      * @return \App\Entity\Stadium
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function getById(int $id) : Stadium
+    public function getById(int $id): Stadium
     {
         $stadium = $this->repository->find($id);
         if (!$stadium) {

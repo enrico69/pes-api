@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
 use App\Traits\TeamDataTrait;
 use Doctrine\ORM\Mapping\OneToMany;
 
@@ -29,13 +27,14 @@ class Gamer
 
     /**
      * Get the Damien's id from the .env file.
+     *
      * @return int
      */
-    public static function getDamienId() : int
+    public static function getDamienId(): int
     {
         $id = (int) $_ENV['DAMIEN_ID'] ?? null;
-        if (\filter_var($id, FILTER_VALIDATE_INT) === false
-            || $id === 0
+        if (false === \filter_var($id, FILTER_VALIDATE_INT)
+            || 0 === $id
         ) {
             throw new \LogicException('Damien Id not found or properly set!');
         }
@@ -59,7 +58,7 @@ class Gamer
      * Defined here because of the relation.
      *
      * @var \App\Entity\Tournament[]
-     * One gamer has won many titles. This is the inverse side.
+     *                               One gamer has won many titles. This is the inverse side.
      * @OneToMany(targetEntity="Tournament", mappedBy="gamerWinner")
      */
     private $titles;
@@ -68,7 +67,7 @@ class Gamer
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Goal[]
-     * One gamer has many goals. This is the inverse side.
+     *                         One gamer has many goals. This is the inverse side.
      * @OneToMany(targetEntity="Goal", mappedBy="gamer")
      */
     private $goals;
@@ -77,7 +76,7 @@ class Gamer
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Event[]
-     * One team has many events. This is the inverse side.
+     *                          One team has many events. This is the inverse side.
      * @OneToMany(targetEntity="Event", mappedBy="gamer")
      */
     private $events;
@@ -92,36 +91,40 @@ class Gamer
     /**
      * @return int
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
      * @return Gamer
      */
-    public function setId(int $id) : Gamer
+    public function setId(int $id): Gamer
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
      * @return Gamer
      */
-    public function setType(string $type) : self
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -135,11 +138,13 @@ class Gamer
 
     /**
      * @param \App\Entity\Goal[] $goals
+     *
      * @return Gamer
      */
     public function setGoals(array $goals): Gamer
     {
         $this->goals = $goals;
+
         return $this;
     }
 }

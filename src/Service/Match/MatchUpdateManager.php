@@ -22,11 +22,11 @@ class MatchUpdateManager
         $this->entityManager = $entityManager;
     }
 
-    public function update(MatchPayload $matchPayload) : void
+    public function update(MatchPayload $matchPayload): void
     {
         $match = $matchPayload->getMatch();
 
-        /**
+        /*
          * Wondering if a part of the job could simply have been done earlier
          * in the request manager...
          */
@@ -37,7 +37,7 @@ class MatchUpdateManager
         $match->setEvents($matchPayload->getEvents());
         $match->setGoals($matchPayload->getGoals());
 
-        $this->setScoreData($matchPayload->getGoals(), $matchPayload->getEvents(), $match );
+        $this->setScoreData($matchPayload->getGoals(), $matchPayload->getEvents(), $match);
         $this->setPlayersStats(
             $matchPayload->getGoals(),
             $matchPayload->getEvents(),
@@ -56,7 +56,7 @@ class MatchUpdateManager
      *
      * @throws \Exception
      */
-    private function setPlayersStats(array $goals, array $events, array $appareances, Match $match) : void
+    private function setPlayersStats(array $goals, array $events, array $appareances, Match $match): void
     {
         // Selections
         foreach ($appareances as $appareance) {
@@ -65,8 +65,8 @@ class MatchUpdateManager
         }
 
         // Goals and assists
-        foreach($goals as $goal) {
-            if ($goal->getType() === Goal::TYPE_OWN_GOAL) {
+        foreach ($goals as $goal) {
+            if (Goal::TYPE_OWN_GOAL === $goal->getType()) {
                 $goal->getPlayer()->incrementOwnGoalCount();
 
                 if ($goal->getTeam()->getId() === $match->getTeam1()->getId()) {
@@ -77,7 +77,7 @@ class MatchUpdateManager
                     $match->getTeam1()->incrementOwnGoalCount();
                 }
             } else {
-                $goal ->getPlayer()->incrementGoalCount();
+                $goal->getPlayer()->incrementGoalCount();
             }
 
             if ($goal->getAssist()) {
@@ -128,11 +128,11 @@ class MatchUpdateManager
     }
 
     /**
-     * @param \App\Entity\Goal[]       $goals
-     * @param \App\Entity\Event[]      $events
-     * @param \App\Entity\Match $match
+     * @param \App\Entity\Goal[]  $goals
+     * @param \App\Entity\Event[] $events
+     * @param \App\Entity\Match   $match
      */
-    private function setScoreData(array $goals, array $events, Match $match) : void
+    private function setScoreData(array $goals, array $events, Match $match): void
     {
         // Shortcut
         $team1 = $match->getTeam1();
@@ -142,7 +142,7 @@ class MatchUpdateManager
             'half' => [$team1->getId() => 0, $team2->getId() => 0],
             'full' => [$team1->getId() => 0, $team2->getId() => 0],
             'half-extra' => [$team1->getId() => 0, $team2->getId() => 0],
-            'full-extra' => [$team1->getId() => 0, $team2->getId() => 0]
+            'full-extra' => [$team1->getId() => 0, $team2->getId() => 0],
         ];
 
         foreach ($goals as $goal) {
@@ -153,17 +153,17 @@ class MatchUpdateManager
                 $minute[1] = (int) $minute[1];
             }
 
-            if ($minute[0] <= 45 || ($minute[0] === 45 && !empty($minute[1]))) {
+            if ($minute[0] <= 45 || (45 === $minute[0] && !empty($minute[1]))) {
                 $part = 'half';
-            } elseif ($minute[0] <= 90 || ($minute[0] === 90 && !empty($minute[1]))) {
+            } elseif ($minute[0] <= 90 || (90 === $minute[0] && !empty($minute[1]))) {
                 $part = 'full';
-            } elseif ($minute[0] <= 105 || ($minute[0] === 105 && !empty($minute[1]))) {
+            } elseif ($minute[0] <= 105 || (105 === $minute[0] && !empty($minute[1]))) {
                 $part = 'half-extra';
             } else {
                 $part = 'full-extra';
             }
 
-            $scores[$part][$goal->getTeam()->getId()]++;
+            ++$scores[$part][$goal->getTeam()->getId()];
         }
 
         $match->setTeam1HalfTimeScore($scores['half'][$team1->getId()]);
@@ -175,11 +175,11 @@ class MatchUpdateManager
         $team1PenScore = 0;
         $team2PenScore = 0;
         foreach ($events as $event) {
-            if ($event->getType() === Event::PEN_SHOOTOUTS_SCORED_KEY) {
+            if (Event::PEN_SHOOTOUTS_SCORED_KEY === $event->getType()) {
                 if ($event->getTeam()->getId() === $match->getTeam1()->getId()) {
-                    $team1PenScore++;
+                    ++$team1PenScore;
                 } else {
-                    $team2PenScore++;
+                    ++$team2PenScore;
                 }
             }
         }

@@ -25,13 +25,12 @@ class TournamentFormCreationRequestHandler
     /** @var \App\Repository\TeamRepository */
     private $teamRepository;
 
-
     public function __construct(
         RequestStack $request,
         TournamentCreationManager $tournamentCreationManager,
         TeamRepository $teamRepository
     ) {
-        /**
+        /*
          * Note that injecting the payload could be more pertinent instead of the request, if we want to creat
          * the tournament from elsewhere.
          */
@@ -43,7 +42,7 @@ class TournamentFormCreationRequestHandler
     /**
      * @throws \Exception
      */
-    public function process() : void
+    public function process(): void
     {
         $params = $this->request->request->all();
 
@@ -61,7 +60,7 @@ class TournamentFormCreationRequestHandler
         );
     }
 
-    private function validate(array $data) : void
+    private function validate(array $data): void
     {
         //  array (size=4)
         //  'type' => string 'calcio' (length=6)
@@ -73,7 +72,6 @@ class TournamentFormCreationRequestHandler
         //      2 => string '3' (length=1)
         //      3 => string '11' (length=2)
         //      4 => string '0' (length=1)
-
 
         // Calcio Type
         if (empty($data[self::TYPE_FIELD])) {
@@ -95,9 +93,9 @@ class TournamentFormCreationRequestHandler
         }
 
         if (false === is_array($data[self::ASSOCIATIONS_ID_FIELD])
-            || count($data[self::ASSOCIATIONS_ID_FIELD]) !== 4
+            || 4 !== count($data[self::ASSOCIATIONS_ID_FIELD])
         ) {
-            throw new \LogicException('Invalid associations data: ' . \serialize($data[self::ASSOCIATIONS_ID_FIELD]));
+            throw new \LogicException('Invalid associations data: '.\serialize($data[self::ASSOCIATIONS_ID_FIELD]));
         }
 
         $this->autoSelect = false;
@@ -112,7 +110,7 @@ class TournamentFormCreationRequestHandler
                 throw new \LogicException('Team id must be an int!');
             }
 
-            if ((int) $teamId === 0) {
+            if (0 === (int) $teamId) {
                 if ($this->autoSelect) {
                     throw new \LogicException('Only one team can be in autoselect!');
                 }
@@ -123,13 +121,14 @@ class TournamentFormCreationRequestHandler
 
     /**
      * @param array $params
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    private function addRandomTeam(array &$params) : void
+    private function addRandomTeam(array &$params): void
     {
         // You can force a team if you want (ex: for debugging)
         $forcedTeamId = (int) $params[self::FORCED_TEAM_ID_FIELD];
-        if ($forcedTeamId !== 0 && false === \in_array($forcedTeamId, $params[self::ASSOCIATIONS_ID_FIELD])) {
+        if (0 !== $forcedTeamId && false === \in_array($forcedTeamId, $params[self::ASSOCIATIONS_ID_FIELD])) {
             // We load it to check it exists.
             $randomTeam = $this->teamRepository->getById($forcedTeamId);
         } else {
@@ -138,7 +137,7 @@ class TournamentFormCreationRequestHandler
         }
 
         foreach ($params[self::ASSOCIATIONS_ID_FIELD] as &$teamId) {
-            if ((int) $teamId === 0) {
+            if (0 === (int) $teamId) {
                 $teamId = $randomTeam->getId();
 
                 return;

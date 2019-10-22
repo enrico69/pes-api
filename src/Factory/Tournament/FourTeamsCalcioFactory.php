@@ -32,12 +32,12 @@ class FourTeamsCalcioFactory
             throw new \LogicException('The collection is not locked!');
         }
 
-        if (\count($gamerTeamAssociationCollection) !== 4) {
+        if (4 !== \count($gamerTeamAssociationCollection)) {
             throw new \LogicException('The collection does not contain 4 associations!');
         }
 
         $this->gamerTeamAssociationCollection = $gamerTeamAssociationCollection;
-        /**
+        /*
          * If no winner team (e.g, the team is not present in the tournament, let's take one HUMAN randomly,
          * it will be used to decide the first match of the tournament. We take a human because we never
          * want a computer opponent in the last match.
@@ -45,9 +45,8 @@ class FourTeamsCalcioFactory
          */
         $this->winnerTeam = $winnerTeam ?? $this->gamerTeamAssociationCollection->getRandomAssociation([], Gamer::TYPE_COMPUTER)->getTeam();
 
-
         // Damien is here AND one gamer is managed by the computer.
-        if ($gamerTeamAssociationCollection->getComputerCount() === 1
+        if (1 === $gamerTeamAssociationCollection->getComputerCount()
             && $gamerTeamAssociationCollection->getDamienTeamId()) {
             $this->isSpecial = true;
         }
@@ -55,7 +54,7 @@ class FourTeamsCalcioFactory
         return $this->createCalcio();
     }
 
-    private function getFirstMatchesTeams() : array
+    private function getFirstMatchesTeams(): array
     {
         $exclusions = [$this->winnerTeam->getId()];
 
@@ -66,7 +65,7 @@ class FourTeamsCalcioFactory
         return [$firstMatchTeam1, $firstMatchTeam2];
     }
 
-    private function getSpecialCalcioFirstMatchesTeams() : array
+    private function getSpecialCalcioFirstMatchesTeams(): array
     {
         /**
          * J1
@@ -76,8 +75,8 @@ class FourTeamsCalcioFactory
         $damienAssociation = $this->gamerTeamAssociationCollection->getDamienAssociation();
 
         if ($this->winnerTeam->getId() === $damienAssociation->getTeam()->getId()) {
-            $firstMatchTeam1 =  $damienAssociation->getTeam();
-            $firstMatchTeam2 =  $this->gamerTeamAssociationCollection
+            $firstMatchTeam1 = $damienAssociation->getTeam();
+            $firstMatchTeam2 = $this->gamerTeamAssociationCollection
                 ->getRandomAssociation([$damienAssociation->getTeam()->getId()], Gamer::TYPE_COMPUTER)
                 ->getTeam();
         } else {
@@ -89,11 +88,10 @@ class FourTeamsCalcioFactory
         return [$firstMatchTeam1, $firstMatchTeam2];
     }
 
-
     /**
      * @return \App\Model\MatchCollection
      */
-    private function createCalcio() : MatchCollection
+    private function createCalcio(): MatchCollection
     {
         $matchCollection = new MatchCollection();
         $associations = $this->gamerTeamAssociationCollection->getAssociations();
@@ -101,12 +99,12 @@ class FourTeamsCalcioFactory
 
         // Create the association vs association
         $matches = [];
-        $matches[] = [$associations[0],$associations[1]];
-        $matches[] = [$associations[0],$associations[2]];
-        $matches[] = [$associations[0],$associations[3]];
-        $matches[] = [$associations[1],$associations[2]];
-        $matches[] = [$associations[1],$associations[3]];
-        $matches[] = [$associations[2],$associations[3]];
+        $matches[] = [$associations[0], $associations[1]];
+        $matches[] = [$associations[0], $associations[2]];
+        $matches[] = [$associations[0], $associations[3]];
+        $matches[] = [$associations[1], $associations[2]];
+        $matches[] = [$associations[1], $associations[3]];
+        $matches[] = [$associations[2], $associations[3]];
 
         // Create the match objects with the team and the gamer
         $matchesObjs = [];
@@ -130,16 +128,16 @@ class FourTeamsCalcioFactory
         }
 
         $exclusions = [$firstMatchTeam1->getId(), $firstMatchTeam2->getId()];
-        $secondMatchTeam1 =  $this->gamerTeamAssociationCollection->getRandomAssociation($exclusions)->getTeam();
+        $secondMatchTeam1 = $this->gamerTeamAssociationCollection->getRandomAssociation($exclusions)->getTeam();
         \array_push($exclusions, $secondMatchTeam1->getId());
-        $secondMatchTeam2 =  $this->gamerTeamAssociationCollection->getRandomAssociation($exclusions)->getTeam();
+        $secondMatchTeam2 = $this->gamerTeamAssociationCollection->getRandomAssociation($exclusions)->getTeam();
 
         // Extracting the first and the second match
         $firstMatch = null;
         $secondMatch = null;
         foreach ($matchesObjs as $key => $matchObj) {
             /** @var \App\Entity\Match $matchObj */
-            if ( ($matchObj->getTeam1()->getId() === $firstMatchTeam1->getId()
+            if (($matchObj->getTeam1()->getId() === $firstMatchTeam1->getId()
                 && $matchObj->getTeam2()->getId() === $firstMatchTeam2->getId())
                 || ($matchObj->getTeam1()->getId() === $firstMatchTeam2->getId()
                     && $matchObj->getTeam2()->getId() === $firstMatchTeam1->getId())
@@ -149,7 +147,7 @@ class FourTeamsCalcioFactory
                 unset($matchesObjs[$key]);
             }
 
-            if ( ($matchObj->getTeam1()->getId() === $secondMatchTeam1->getId()
+            if (($matchObj->getTeam1()->getId() === $secondMatchTeam1->getId()
                     && $matchObj->getTeam2()->getId() === $secondMatchTeam2->getId())
                 || ($matchObj->getTeam1()->getId() === $secondMatchTeam2->getId()
                     && $matchObj->getTeam2()->getId() === $secondMatchTeam1->getId())

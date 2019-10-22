@@ -46,9 +46,10 @@ class TournamentCreationManager
     }
 
     /**
-     * @param array $associations (key = gamer id, value = team id)
+     * @param array    $associations (key = gamer id, value = team id)
      * @param string   $type
      * @param int|null $winnerId
+     *
      * @throws \Exception
      */
     public function generate(

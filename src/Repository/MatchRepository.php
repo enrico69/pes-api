@@ -7,11 +7,8 @@
 namespace App\Repository;
 
 use App\Entity\Match;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\DBAL\FetchMode;
 
 class MatchRepository
 {
@@ -24,16 +21,18 @@ class MatchRepository
     /** @param \Doctrine\ORM\EntityManagerInterface $entityManager */
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository     = $entityManager->getRepository(Match::class);
-        $this->entityManager  = $entityManager;
+        $this->repository = $entityManager->getRepository(Match::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param int $id
+     *
      * @return \App\Entity\Match
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function getById(int $id) : Match
+    public function getById(int $id): Match
     {
         $match = $this->repository->find($id);
         if (!$match) {
@@ -45,9 +44,10 @@ class MatchRepository
 
     /**
      * Return the list of the matches not played yet.
+     *
      * @return array
      */
-    public function findNotDone() : array
+    public function findNotDone(): array
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('m');

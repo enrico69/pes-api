@@ -75,9 +75,9 @@ class MatchManagementRequestHandler
         StadiumRepository $stadiumRepository,
         MatchUpdateManager $matchUpdateManager
     ) {
-        $this->request = $requestStack->getCurrentRequest();;
+        $this->request = $requestStack->getCurrentRequest();
         $this->logger = $logger;
-        $this->saveDir = $rootDir . DIRECTORY_SEPARATOR . 'save-matches' . DIRECTORY_SEPARATOR;
+        $this->saveDir = $rootDir.DIRECTORY_SEPARATOR.'save-matches'.DIRECTORY_SEPARATOR;
         $this->teamRepository = $teamRepository;
         $this->entityManager = $entityManager;
         $this->matchRepository = $matchRepository;
@@ -90,7 +90,7 @@ class MatchManagementRequestHandler
      * @throws \Doctrine\ORM\EntityNotFoundException
      * @throws \Exception
      */
-    public function process() : void
+    public function process(): void
     {
         $params = $this->request->request->all();
         $this->savePayload($params);
@@ -100,21 +100,22 @@ class MatchManagementRequestHandler
 
     /**
      * @param mixed $params mixed on purpose because we don't know what we could receive in case of error...
+     *
      * @throws \Exception
      */
-    private function savePayload($params) : void
+    private function savePayload($params): void
     {
         $jsonEncodedParams = \json_encode($params);
-        $dataToSave = $this->request->headers->get('referer') . PHP_EOL . $jsonEncodedParams;
+        $dataToSave = $this->request->headers->get('referer').PHP_EOL.$jsonEncodedParams;
 
         $result = file_put_contents(
-            $this->saveDir . microtime(true) . '.txt',
+            $this->saveDir.microtime(true).'.txt',
             $dataToSave
         );
 
         if (!$result) {
             $this->logger->warning(
-                'Impossible to save the payload in to the file for the match. Payload was: ' . $jsonEncodedParams
+                'Impossible to save the payload in to the file for the match. Payload was: '.$jsonEncodedParams
             );
         }
     }
@@ -126,9 +127,9 @@ class MatchManagementRequestHandler
      *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    private function validateAndHydrate(array $params) : MatchPayload
+    private function validateAndHydrate(array $params): MatchPayload
     {
-        $this->logger->info('<pre>' . print_r($params, true) . '</pre>');
+        $this->logger->info('<pre>'.print_r($params, true).'</pre>');
 
         if (empty($params[self::MATCH_DATA_KEY]) || !is_array($params[self::MATCH_DATA_KEY])) {
             $this->raiseError('Missing or wrong payload for the match');
@@ -156,7 +157,7 @@ class MatchManagementRequestHandler
 
         /**
          * Players and Appearances (requires match, and teams)
-         * Respect the order: 1) get players 2) create the elements (appearances, goals, events...) of the players
+         * Respect the order: 1) get players 2) create the elements (appearances, goals, events...) of the players.
          */
         $playerData = $this->getPlayers($params);
         $playersObjs = $this->playerRepository->getByIds(\array_keys($playerData));
@@ -177,7 +178,7 @@ class MatchManagementRequestHandler
         return $matchPayload;
     }
 
-    private function getTeamsData(array $params, array &$teams, array &$gamers, MatchPayload $matchPayload, Match $match) : void
+    private function getTeamsData(array $params, array &$teams, array &$gamers, MatchPayload $matchPayload, Match $match): void
     {
         $reorganize = false;
 
@@ -217,7 +218,7 @@ class MatchManagementRequestHandler
         $gamers[$match->getTeam2()->getId()] = $match->getGamer2();
     }
 
-    private function getGoals(array $params, array $playersObjs, Match $match, array $teams, array $gamers) : array
+    private function getGoals(array $params, array $playersObjs, Match $match, array $teams, array $gamers): array
     {
         $goals = [];
 
@@ -234,8 +235,12 @@ class MatchManagementRequestHandler
             $goal->setMatch($match);
 
             $playerId = (int) $entry[self::PLAYER_ID_KEY] ?? null;
-            if (!$playerId) { $this->raiseError('Goal: player id cannot be 0!'); }
-            if (!\array_key_exists($playerId, $playersObjs)) { $this->raiseError('Goal: player not found in the list.'); }
+            if (!$playerId) {
+                $this->raiseError('Goal: player id cannot be 0!');
+            }
+            if (!\array_key_exists($playerId, $playersObjs)) {
+                $this->raiseError('Goal: player not found in the list.');
+            }
             $goal->setPlayer($playersObjs[$playerId]);
 
             if (empty($entry[self::HAPPENED_AT_KEY])) {
@@ -247,11 +252,17 @@ class MatchManagementRequestHandler
             $goal->setScoredAt($entry[self::HAPPENED_AT_KEY]);
 
             $teamId = (int) $entry[self::TEAM_ID_KEY] ?? null;
-            if (!$teamId) { $this->raiseError('Goal: team id cannot be 0!'); }
-            if (!\array_key_exists($teamId, $teams)) { $this->raiseError("Goal: team #{$teamId} not found in the list."); }
+            if (!$teamId) {
+                $this->raiseError('Goal: team id cannot be 0!');
+            }
+            if (!\array_key_exists($teamId, $teams)) {
+                $this->raiseError("Goal: team #{$teamId} not found in the list.");
+            }
             $goal->setTeam($teams[$teamId]);
 
-            if (!\array_key_exists($teamId, $gamers)) { $this->raiseError("Goal: gamer for team id #{$teamId} not found in the list."); }
+            if (!\array_key_exists($teamId, $gamers)) {
+                $this->raiseError("Goal: gamer for team id #{$teamId} not found in the list.");
+            }
             $goal->setGamer($gamers[$teamId]);
 
             if (empty($entry[self::GOAL_TYPE_KEY])) {
@@ -259,9 +270,11 @@ class MatchManagementRequestHandler
             }
             $goal->setType($entry[self::GOAL_TYPE_KEY]);
 
-            $assistPlayerId = !empty($entry[self::ASSIST_PLAYER_ID_KEY]) ? (int)$entry[self::ASSIST_PLAYER_ID_KEY] : null;
+            $assistPlayerId = !empty($entry[self::ASSIST_PLAYER_ID_KEY]) ? (int) $entry[self::ASSIST_PLAYER_ID_KEY] : null;
             if ($assistPlayerId) {
-                if (!\array_key_exists($assistPlayerId, $playersObjs)) { $this->raiseError('Goal: assist player not found in the list.'); }
+                if (!\array_key_exists($assistPlayerId, $playersObjs)) {
+                    $this->raiseError('Goal: assist player not found in the list.');
+                }
                 if ($assistPlayerId === $playerId) {
                     $this->raiseError('Goal: the scorer and the assist cannot be the same!');
                 }
@@ -274,7 +287,7 @@ class MatchManagementRequestHandler
         return $goals;
     }
 
-    private function getPlayers(array $params) : array
+    private function getPlayers(array $params): array
     {
         if (empty($params[self::COMPO_HOME_KEY]) || !is_array($params[self::COMPO_HOME_KEY])
             || empty($params[self::COMPO_AWAY_KEY]) || !is_array($params[self::COMPO_AWAY_KEY])
@@ -291,11 +304,11 @@ class MatchManagementRequestHandler
                     continue;
                 }
 
-                $teamId = ($key === self::COMPO_HOME_KEY) ? $params[self::TEAM_HOME_KEY] : $params[self::TEAM_AWAY_KEY];
+                $teamId = (self::COMPO_HOME_KEY === $key) ? $params[self::TEAM_HOME_KEY] : $params[self::TEAM_AWAY_KEY];
                 $data = ['teamId' => $teamId];
                 $subData = [];
 
-                if(!empty($player[self::REPLACED_BY_KEY])) {
+                if (!empty($player[self::REPLACED_BY_KEY])) {
                     $players[(int) $player[self::REPLACED_BY_KEY]] = $data;
                     $subData = $this->getSubstitutionData($player);
                 }
@@ -307,7 +320,7 @@ class MatchManagementRequestHandler
         return $players;
     }
 
-    private function getSubstitutionData(array $player) : array
+    private function getSubstitutionData(array $player): array
     {
         if (empty($player[self::REPLACED_AT_KEY])) {
             $this->raiseError('Missing substitution minute');
@@ -318,7 +331,7 @@ class MatchManagementRequestHandler
         return [self::REPLACED_BY_KEY => (int) $player[self::REPLACED_BY_KEY], self::REPLACED_AT_KEY => $player[self::REPLACED_AT_KEY]];
     }
 
-    private function validateMinute(array $minute, string $theme) : void
+    private function validateMinute(array $minute, string $theme): void
     {
         $minuteFirstPart = (int) $minute[0];
         if (!$minuteFirstPart) {
@@ -336,7 +349,7 @@ class MatchManagementRequestHandler
         }
     }
 
-    private function getAppearances(array $playerData, array $playersObjs, array $teams, Match $match) : array
+    private function getAppearances(array $playerData, array $playersObjs, array $teams, Match $match): array
     {
         $appearances = [];
         foreach ($playerData as $playerId => $playerInfo) {
@@ -356,7 +369,7 @@ class MatchManagementRequestHandler
         return $appearances;
     }
 
-    private function getEvents(array $params, array $playersObjs, Match $match, array $teams, array $gamers) : array
+    private function getEvents(array $params, array $playersObjs, Match $match, array $teams, array $gamers): array
     {
         $events = [];
         if (false === \array_key_exists(self::EVENTS_KEY, $params)) {
@@ -368,16 +381,26 @@ class MatchManagementRequestHandler
             $event->setMatch($match);
 
             $teamId = !empty($element[self::TEAM_ID_KEY]) ? (int) $element[self::TEAM_ID_KEY] : null;
-            if (!$teamId) { $this->raiseError('Event: team id cannot be 0!'); }
-            if (!\array_key_exists($teamId, $teams)) { $this->raiseError("Event: team #{$teamId} not found in the list."); }
+            if (!$teamId) {
+                $this->raiseError('Event: team id cannot be 0!');
+            }
+            if (!\array_key_exists($teamId, $teams)) {
+                $this->raiseError("Event: team #{$teamId} not found in the list.");
+            }
             $event->setTeam($teams[$teamId]);
 
-            if (!\array_key_exists($teamId, $gamers)) { $this->raiseError("Event: gamer for team id #{$teamId} not found in the list."); }
+            if (!\array_key_exists($teamId, $gamers)) {
+                $this->raiseError("Event: gamer for team id #{$teamId} not found in the list.");
+            }
             $event->setGamer($gamers[$teamId]);
 
             $playerId = (int) $element[self::PLAYER_ID_KEY] ?? null;
-            if (!$playerId) { $this->raiseError('Event: player id cannot be 0!'); }
-            if (!\array_key_exists($playerId, $playersObjs)) { $this->raiseError('Event: player not found in the list.'); }
+            if (!$playerId) {
+                $this->raiseError('Event: player id cannot be 0!');
+            }
+            if (!\array_key_exists($playerId, $playersObjs)) {
+                $this->raiseError('Event: player not found in the list.');
+            }
             $event->setPlayer($playersObjs[$playerId]);
 
             if (empty($element[self::HAPPENED_AT_KEY])) {
@@ -390,7 +413,9 @@ class MatchManagementRequestHandler
             if (empty($element[self::TYPE_KEY])) {
                 $this->raiseError('Missing event type key');
             }
-            if (!in_array($element[self::TYPE_KEY], Event::ALLOWED_TYPES)) { $this->raiseError('Event type unknown: ' . $element[self::TYPE_KEY]); }
+            if (!in_array($element[self::TYPE_KEY], Event::ALLOWED_TYPES)) {
+                $this->raiseError('Event type unknown: '.$element[self::TYPE_KEY]);
+            }
             $event->setType($element[self::TYPE_KEY]);
 
             $events[] = $event;
@@ -401,6 +426,6 @@ class MatchManagementRequestHandler
 
     private function raiseError(string $msg): void
     {
-        throw new \RuntimeException($msg . '. $_POST value was: ' . \json_encode($_POST));
+        throw new \RuntimeException($msg.'. $_POST value was: '.\json_encode($_POST));
     }
 }

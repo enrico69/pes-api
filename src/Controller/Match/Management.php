@@ -7,7 +7,6 @@
 namespace App\Controller\Match;
 
 use App\Entity\Match;
-use App\Entity\Player;
 use App\Entity\Stadium;
 use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +22,7 @@ use App\Repository\MatchRepository;
 /**
  * @Route("/match-management")
  */
-class Management extends  AbstractController
+class Management extends AbstractController
 {
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
@@ -33,7 +32,6 @@ class Management extends  AbstractController
     private $matchRepository;
     /** @var \App\Repository\PlayerRepository */
     private $playerRepository;
-
 
     public function __construct(
         LoggerInterface $logger,
@@ -48,19 +46,19 @@ class Management extends  AbstractController
     }
 
     /**
-     * Creation screen
+     * Creation screen.
      *
      * @Route("/list", name="match-management-list")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index() : Response
+    public function index(): Response
     {
         return $this->render(
             'match/list-not-played.html.twig',
             [
                 'screenTitle' => 'Sélectionner un match à jouer',
-                'matches' => $this->matchRepository->findNotDone()
+                'matches' => $this->matchRepository->findNotDone(),
             ]
         );
     }
@@ -73,7 +71,7 @@ class Management extends  AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function play(Match $match) : Response
+    public function play(Match $match): Response
     {
         if ($match->getDate()) {
             throw new NotFoundHttpException('Ce match a déjà été joué!');
@@ -96,20 +94,20 @@ class Management extends  AbstractController
     }
 
     /**
-     * Tournament creation submission
+     * Tournament creation submission.
      *
      * @Route("/match-management-submit", name="tournament-management-submit", methods={"POST"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function submitUpdate() : Response
+    public function submitUpdate(): Response
     {
         $status = 'failure';
         try {
             $this->managementRequestHandler->process();
             $status = 'success';
         } catch (\Throwable $ex) {
-            $this->logger->error($ex->getMessage() . ': ' . $ex->getTraceAsString());
+            $this->logger->error($ex->getMessage().': '.$ex->getTraceAsString());
         }
 
         return new JsonResponse(['status' => $status]);

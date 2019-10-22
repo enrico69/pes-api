@@ -7,15 +7,13 @@
 namespace App\Model;
 
 use App\Entity\Match;
-use App\Entity\Player;
-use App\Entity\Team;
 use App\Entity\Stadium;
 
 class MatchPayload
 {
-    /** @var \App\Entity\Match*/
+    /** @var \App\Entity\Match */
     private $match;
-    /** @var \App\Entity\Stadium*/
+    /** @var \App\Entity\Stadium */
     private $stadium;
     /** @var \App\Entity\Player[] */
     private $players = [];
@@ -31,7 +29,7 @@ class MatchPayload
     /**
      * @return \App\Entity\Match
      */
-    public function getMatch() : Match
+    public function getMatch(): Match
     {
         return $this->match;
     }
@@ -41,27 +39,30 @@ class MatchPayload
      *
      * @return MatchPayload
      */
-    public function setMatch(Match $match) : MatchPayload
+    public function setMatch(Match $match): MatchPayload
     {
         $this->match = $match;
+
         return $this;
     }
 
     /**
      * @return Stadium
      */
-    public function getStadium() : ?Stadium
+    public function getStadium(): ?Stadium
     {
         return $this->stadium;
     }
 
     /**
      * @param Stadium $stadium
+     *
      * @return MatchPayload
      */
-    public function setStadium(Stadium $stadium) : MatchPayload
+    public function setStadium(Stadium $stadium): MatchPayload
     {
         $this->stadium = $stadium;
+
         return $this;
     }
 
@@ -75,11 +76,13 @@ class MatchPayload
 
     /**
      * @param \App\Entity\Player[] $players
+     *
      * @return MatchPayload
      */
     public function setPlayers(array $players): MatchPayload
     {
         $this->players = $players;
+
         return $this;
     }
 
@@ -93,11 +96,13 @@ class MatchPayload
 
     /**
      * @param \App\Entity\Appearance[] $appearances
+     *
      * @return MatchPayload
      */
     public function setAppearances(array $appearances): MatchPayload
     {
         $this->appearances = $appearances;
+
         return $this;
     }
 
@@ -111,11 +116,13 @@ class MatchPayload
 
     /**
      * @param \App\Entity\Goal[] $goals
+     *
      * @return MatchPayload
      */
     public function setGoals(array $goals): MatchPayload
     {
         $this->goals = $goals;
+
         return $this;
     }
 
@@ -129,11 +136,13 @@ class MatchPayload
 
     /**
      * @param \App\Entity\Event[] $events
+     *
      * @return MatchPayload
      */
     public function setEvents(array $events): MatchPayload
     {
         $this->events = $events;
+
         return $this;
     }
 
@@ -147,11 +156,13 @@ class MatchPayload
 
     /**
      * @param string $comments
+     *
      * @return MatchPayload
      */
     public function setComments(string $comments): MatchPayload
     {
         $this->comments = $comments;
+
         return $this;
     }
 }

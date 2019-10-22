@@ -6,7 +6,6 @@
 
 namespace App\Model;
 
-
 use App\Entity\Gamer;
 use App\Entity\Team;
 

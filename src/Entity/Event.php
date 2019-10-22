@@ -6,19 +6,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Gamer;
-use App\Entity\Match;
-use App\Entity\Team;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Symfony\Component\DependencyInjection\Tests\Compiler\E;
-
 
 /**
  * @ORM\Entity
@@ -46,7 +37,7 @@ class Event
         self::TYPE_POST_HIT,
         self::PEN_SHOOTOUTS_SCORED_KEY,
         self::PEN_SHOOTOUTS_MISSED_KEY,
-        self::TYPE_PLAYER_OUT_WITHOUT_SUB
+        self::TYPE_PLAYER_OUT_WITHOUT_SUB,
     ];
 
     /**
@@ -110,36 +101,40 @@ class Event
     /**
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
      * @return Event
      */
-    public function setId(int $id) : Event
+    public function setId(int $id): Event
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getHappenedAt() : string
+    public function getHappenedAt(): string
     {
         return $this->happenedAt;
     }
 
     /**
      * @param string $happenedAt
+     *
      * @return Event
      */
-    public function setScoredAt(string $happenedAt) : Event
+    public function setScoredAt(string $happenedAt): Event
     {
         $this->happenedAt = $happenedAt;
+
         return $this;
     }
 
@@ -153,11 +148,13 @@ class Event
 
     /**
      * @param \App\Entity\Team $team
+     *
      * @return Event
      */
     public function setTeam(Team $team): Event
     {
         $this->team = $team;
+
         return $this;
     }
 
@@ -171,11 +168,13 @@ class Event
 
     /**
      * @param \App\Entity\Gamer $gamer
+     *
      * @return Event
      */
     public function setGamer(Gamer $gamer): Event
     {
         $this->gamer = $gamer;
+
         return $this;
     }
 
@@ -189,11 +188,13 @@ class Event
 
     /**
      * @param \App\Entity\Player $player
+     *
      * @return Event
      */
     public function setPlayer(Player $player): Event
     {
         $this->player = $player;
+
         return $this;
     }
 
@@ -207,44 +208,48 @@ class Event
 
     /**
      * @param \App\Entity\Match $match
+     *
      * @return Event
      */
     public function setMatch(Match $match): Event
     {
         $this->match = $match;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
      * @return Event
      */
-    public function setType(string $type) : Event
+    public function setType(string $type): Event
     {
         if (!\in_array($type, self::ALLOWED_TYPES)) {
             throw new \LogicException("Unrecognized event type: '{$type}'");
         }
 
         $this->type = $type;
+
         return $this;
     }
 
-    public function setComment(string $comment) : Event
+    public function setComment(string $comment): Event
     {
         $this->comment = $comment;
 
         return $this;
     }
 
-    public function getComment() : ?string
+    public function getComment(): ?string
     {
         return $this->comment;
     }

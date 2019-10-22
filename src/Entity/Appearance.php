@@ -8,11 +8,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
@@ -69,36 +65,40 @@ class Appearance
     /**
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param mixed $id
+     *
      * @return Appearance
      */
-    public function setId(int $id) : Appearance
+    public function setId(int $id): Appearance
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getReplacedAt() : string
+    public function getReplacedAt(): string
     {
         return $this->replacedAt;
     }
 
     /**
      * @param string $replacedAt
+     *
      * @return Appearance
      */
-    public function setReplacedAt(string $replacedAt) : Appearance
+    public function setReplacedAt(string $replacedAt): Appearance
     {
         $this->replacedAt = $replacedAt;
+
         return $this;
     }
 
@@ -112,11 +112,13 @@ class Appearance
 
     /**
      * @param \App\Entity\Match $match
+     *
      * @return Appearance
      */
     public function setMatch(Match $match): Appearance
     {
         $this->match = $match;
+
         return $this;
     }
 
@@ -130,11 +132,13 @@ class Appearance
 
     /**
      * @param \App\Entity\Player $player
+     *
      * @return Appearance
      */
     public function setPlayer(Player $player): Appearance
     {
         $this->player = $player;
+
         return $this;
     }
 
@@ -148,29 +152,33 @@ class Appearance
 
     /**
      * @param \App\Entity\Team $team
+     *
      * @return Appearance
      */
     public function setTeam(Team $team): Appearance
     {
         $this->team = $team;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getReplacedBy() : int
+    public function getReplacedBy(): int
     {
         return $this->replacedBy;
     }
 
     /**
      * @param int $replacedBy
+     *
      * @return Appearance
      */
     public function setReplacedBy(int $replacedBy)
     {
         $this->replacedBy = $replacedBy;
+
         return $this;
     }
 }

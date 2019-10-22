@@ -11,13 +11,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\OneToOne;
-use App\Entity\Stadium;
-use App\Entity\Goal;
 
 /**
  * @ORM\Entity
@@ -35,7 +30,7 @@ class Match
         self::TYPE_CHAMPIONSHIP => 'Championnat',
         self::TYPE_CUP_FIRST_LEG => 'Coupe match aller',
         self::TYPE_CUP_SECOND_LEG => 'Coupe match retour',
-        self::TYPE_CUP_SIMPLE => 'Coupe'
+        self::TYPE_CUP_SIMPLE => 'Coupe',
     ];
 
     /**
@@ -47,6 +42,7 @@ class Match
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
      * @var \DateTime
      */
     private $date;
@@ -59,7 +55,7 @@ class Match
     /**
      * @var \App\Entity\Gamer
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Gamer")
      * @JoinColumn(name="gamer_1", referencedColumnName="gamer_id")
      */
@@ -68,7 +64,7 @@ class Match
     /**
      * @var \App\Entity\Gamer
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Gamer")
      * @JoinColumn(name="gamer_2", referencedColumnName="gamer_id")
      */
@@ -77,7 +73,7 @@ class Match
     /**
      * @var \App\Entity\Team
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Team")
      * @JoinColumn(name="team_1", referencedColumnName="team_id")
      */
@@ -86,7 +82,7 @@ class Match
     /**
      * @var \App\Entity\Team
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Team")
      * @JoinColumn(name="team_2", referencedColumnName="team_id")
      */
@@ -95,7 +91,7 @@ class Match
     /**
      * @var \App\Entity\Gamer
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Gamer")
      * @JoinColumn(name="winner_gamer", referencedColumnName="gamer_id")
      */
@@ -104,7 +100,7 @@ class Match
     /**
      * @var \App\Entity\Team
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Team")
      * @JoinColumn(name="winner_team", referencedColumnName="team_id")
      */
@@ -172,7 +168,7 @@ class Match
     /**
      * @var \App\Entity\Stadium
      *
-     * This is the owning side.
+     * This is the owning side
      * @ManyToOne(targetEntity="Stadium")
      * @JoinColumn(name="stadium", referencedColumnName="stadium_id")
      */
@@ -185,7 +181,7 @@ class Match
 
     /**
      * @var \App\Entity\Goal[]
-     * One match has many goals. This is the inverse side.
+     *                         One match has many goals. This is the inverse side.
      * @OneToMany(targetEntity="Goal", mappedBy="match", cascade={"persist", "remove" })
      */
     private $goals;
@@ -194,14 +190,14 @@ class Match
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Event[]
-     * One match has many events. This is the inverse side.
+     *                          One match has many events. This is the inverse side.
      * @OneToMany(targetEntity="Event", mappedBy="match", cascade={"persist", "remove" })
      */
     private $events;
 
     /**
      * @var \App\Entity\Appearance[]
-     * One match has many appearances. This is the inverse side.
+     *                               One match has many appearances. This is the inverse side.
      * @OneToMany(targetEntity="Appearance", mappedBy="match", cascade={"persist", "remove" })
      */
     private $appearances;
@@ -216,23 +212,25 @@ class Match
     /**
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
      * @return Match
      */
-    public function setId(int $id) : Match
+    public function setId(int $id): Match
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
-     * @return null|\DateTime
+     * @return \DateTime|null
      */
     public function getDate(): ?\DateTime
     {
@@ -241,101 +239,113 @@ class Match
 
     /**
      * @param \DateTime $date
+     *
      * @return Match
      */
     public function setDate(\DateTime $date): Match
     {
         $this->date = $date;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
      * @return Match
      */
     public function setType(string $type): Match
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam1HalfTimeScore() : int
+    public function getTeam1HalfTimeScore(): int
     {
         return $this->team1HalfTimeScore;
     }
 
     /**
      * @param int $team1HalfTimeScore
+     *
      * @return Match
      */
     public function setTeam1HalfTimeScore(int $team1HalfTimeScore): Match
     {
         $this->team1HalfTimeScore = $team1HalfTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam2HalfTimeScore() : int
+    public function getTeam2HalfTimeScore(): int
     {
         return $this->team2HalfTimeScore;
     }
 
     /**
      * @param int $team2HalfTimeScore
+     *
      * @return Match
      */
     public function setTeam2HalfTimeScore(int $team2HalfTimeScore): Match
     {
         $this->team2HalfTimeScore = $team2HalfTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam1FullTimeScore() : int
+    public function getTeam1FullTimeScore(): int
     {
         return $this->team1FullTimeScore;
     }
 
     /**
      * @param int $team1FullTimeScore
+     *
      * @return Match
      */
     public function setTeam1FullTimeScore(int $team1FullTimeScore): Match
     {
         $this->team1FullTimeScore = $team1FullTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam2FullTimeScore() : int
+    public function getTeam2FullTimeScore(): int
     {
         return $this->team2FullTimeScore;
     }
 
     /**
      * @param int $team2FullTimeScore
+     *
      * @return Match
      */
     public function setTeam2FullTimeScore(int $team2FullTimeScore): Match
     {
         $this->team2FullTimeScore = $team2FullTimeScore;
+
         return $this;
     }
 
@@ -349,101 +359,113 @@ class Match
 
     /**
      * @param int $team1ProlongHalfTimeScore
+     *
      * @return Match
      */
     public function setTeam1ProlongHalfTimeScore(int $team1ProlongHalfTimeScore): Match
     {
         $this->team1ProlongHalfTimeScore = $team1ProlongHalfTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam2ProlongHalfTimeScore() : int
+    public function getTeam2ProlongHalfTimeScore(): int
     {
         return $this->team2ProlongHalfTimeScore;
     }
 
     /**
      * @param int $team2ProlongHalfTimeScore
+     *
      * @return Match
      */
     public function setTeam2ProlongHalfTimeScore(int $team2ProlongHalfTimeScore): Match
     {
         $this->team2ProlongHalfTimeScore = $team2ProlongHalfTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam1ProlongFullTimeScore() : int
+    public function getTeam1ProlongFullTimeScore(): int
     {
         return $this->team1ProlongFullTimeScore;
     }
 
     /**
      * @param int $team1ProlongFullTimeScore
+     *
      * @return Match
      */
     public function setTeam1ProlongFullTimeScore(int $team1ProlongFullTimeScore): Match
     {
         $this->team1ProlongFullTimeScore = $team1ProlongFullTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam2ProlongFullTimeScore() : int
+    public function getTeam2ProlongFullTimeScore(): int
     {
         return $this->team2ProlongFullTimeScore;
     }
 
     /**
      * @param int $team2ProlongFullTimeScore
+     *
      * @return Match
      */
     public function setTeam2ProlongFullTimeScore(int $team2ProlongFullTimeScore): Match
     {
         $this->team2ProlongFullTimeScore = $team2ProlongFullTimeScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam1PenaltyScore() : int
+    public function getTeam1PenaltyScore(): int
     {
         return $this->team1PenaltyScore;
     }
 
     /**
      * @param int $team1PenaltyScore
+     *
      * @return Match
      */
     public function setTeam1PenaltyScore(int $team1PenaltyScore): Match
     {
         $this->team1PenaltyScore = $team1PenaltyScore;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getTeam2PenaltyScore() : int
+    public function getTeam2PenaltyScore(): int
     {
         return $this->team2PenaltyScore;
     }
 
     /**
      * @param int $team2PenaltyScore
+     *
      * @return Match
      */
     public function setTeam2PenaltyScore(int $team2PenaltyScore): Match
     {
         $this->team2PenaltyScore = $team2PenaltyScore;
+
         return $this;
     }
 
@@ -477,6 +499,7 @@ class Match
 
     /**
      * @param \App\Entity\Gamer $gamer1
+     *
      * @return Match
      */
     public function setGamer1(Gamer $gamer1): Match
@@ -496,6 +519,7 @@ class Match
 
     /**
      * @param \App\Entity\Gamer $gamer2
+     *
      * @return Match
      */
     public function setGamer2(Gamer $gamer2): Match
@@ -515,6 +539,7 @@ class Match
 
     /**
      * @param \App\Entity\Team $team1
+     *
      * @return Match
      */
     public function setTeam1(Team $team1): Match
@@ -534,6 +559,7 @@ class Match
 
     /**
      * @param \App\Entity\Team $team2
+     *
      * @return Match
      */
     public function setTeam2(Team $team2): Match
@@ -553,6 +579,7 @@ class Match
 
     /**
      * @param \App\Entity\Gamer $winnerGamer
+     *
      * @return Match
      */
     public function setWinnerGamer(Gamer $winnerGamer): Match
@@ -572,6 +599,7 @@ class Match
 
     /**
      * @param \App\Entity\Team $winnerTeam
+     *
      * @return Match
      */
     public function setWinnerTeam(Team $winnerTeam): Match
@@ -591,29 +619,33 @@ class Match
 
     /**
      * @param \App\Entity\Stadium $stadium
+     *
      * @return Match
      */
     public function setStadium(Stadium $stadium): Match
     {
         $this->stadium = $stadium;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getComment() : ?string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
 
     /**
      * @param string $comment
+     *
      * @return Match
      */
-    public function setComment(string $comment) : Match
+    public function setComment(string $comment): Match
     {
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -627,46 +659,52 @@ class Match
 
     /**
      * @param \App\Entity\Goal[] $goals
+     *
      * @return Match
      */
     public function setGoals(array $goals): Match
     {
         $this->goals = $goals;
+
         return $this;
     }
 
     /**
      * @param \App\Entity\Event[] $events
+     *
      * @return Match
      */
-    public function setEvents(array $events) : Match
+    public function setEvents(array $events): Match
     {
         $this->events = $events;
+
         return $this;
     }
 
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEvents() : Collection
+    public function getEvents(): Collection
     {
         return $this->events;
     }
 
     /**
      * @param \App\Entity\Appearance[] $appearances
+     *
      * @return Match
      */
-    public function setAppearances(array $appearances) : Match
+    public function setAppearances(array $appearances): Match
     {
         $this->appearances = $appearances;
+
         return $this;
     }
 
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAppearances() : Collection
+    public function getAppearances(): Collection
     {
         return $this->events;
     }

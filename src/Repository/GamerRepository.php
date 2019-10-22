@@ -8,10 +8,7 @@ namespace App\Repository;
 
 use App\Entity\Gamer;
 use App\Model\GamerCollection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
-use Doctrine\DBAL\FetchMode;
 
 class GamerRepository
 {
@@ -24,11 +21,11 @@ class GamerRepository
     /** @param \Doctrine\ORM\EntityManagerInterface $entityManager */
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository     = $entityManager->getRepository(Gamer::class);
-        $this->entityManager  = $entityManager;
+        $this->repository = $entityManager->getRepository(Gamer::class);
+        $this->entityManager = $entityManager;
     }
 
-    public function getByIds(array $gamerIds) : GamerCollection
+    public function getByIds(array $gamerIds): GamerCollection
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('m');

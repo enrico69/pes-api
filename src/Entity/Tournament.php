@@ -28,7 +28,7 @@ class Tournament
 
     public const TYPES = [
         self::TYPE_CALCIO,
-        self::TYPE_CALCIO_CUP
+        self::TYPE_CALCIO_CUP,
     ];
 
     /**
@@ -40,12 +40,14 @@ class Tournament
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
      * @var \DateTime
      */
     private $endedAt;
@@ -195,6 +197,7 @@ class Tournament
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return Tournament
      */
     public function setCreatedAt(\DateTime $createdAt): Tournament
@@ -207,13 +210,14 @@ class Tournament
     /**
      * @return mixed
      */
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
      * @return \App\Entity\Tournament
      */
     public function setType($type): Tournament
@@ -226,18 +230,20 @@ class Tournament
     /**
      * @return mixed
      */
-    public function getId() :?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param mixed $id
+     *
      * @return Tournament
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -251,6 +257,7 @@ class Tournament
 
     /**
      * @param \App\Entity\Gamer $gamerWinner
+     *
      * @return Tournament
      */
     public function setGamerWinner(Gamer $gamerWinner): Tournament
@@ -270,6 +277,7 @@ class Tournament
 
     /**
      * @param \App\Entity\Team $teamWinner
+     *
      * @return Tournament
      */
     public function setTeamWinner(Team $teamWinner): Tournament
@@ -289,6 +297,7 @@ class Tournament
 
     /**
      * @param \App\Entity\Match[] $matches
+     *
      * @return Tournament
      */
     public function setMatches(array $matches): Tournament
@@ -308,6 +317,7 @@ class Tournament
 
     /**
      * @param \DateTime $endedAt
+     *
      * @return Tournament
      */
     public function setEndedAt(\DateTime $endedAt): Tournament
@@ -327,6 +337,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topScorerTeams
+     *
      * @return Tournament
      */
     public function setTopScorerTeams(Collection $topScorerTeams): Tournament
@@ -346,6 +357,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topScorerPlayers
+     *
      * @return Tournament
      */
     public function setTopScorerPlayers(Collection $topScorerPlayers): Tournament
@@ -365,6 +377,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topWoundedReceivedTeams
+     *
      * @return Tournament
      */
     public function setTopWoundedReceivedTeams(Collection $topWoundedReceivedTeams): Tournament
@@ -384,6 +397,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topWoundedDoneTeams
+     *
      * @return Tournament
      */
     public function setTopWoundedDoneTeams(Collection $topWoundedDoneTeams): Tournament
@@ -403,6 +417,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topDefenceTeams
+     *
      * @return Tournament
      */
     public function setTopDefenceTeams(Collection $topDefenceTeams): Tournament
@@ -422,6 +437,7 @@ class Tournament
 
     /**
      * @param \Doctrine\Common\Collections\Collection $topCardsTeams
+     *
      * @return Tournament
      */
     public function setTopCardsTeams(Collection $topCardsTeams): Tournament
@@ -434,18 +450,20 @@ class Tournament
     /**
      * @return string
      */
-    public function getExtraData() : ?string
+    public function getExtraData(): ?string
     {
         return $this->extraData;
     }
 
     /**
      * @param string $extraData
+     *
      * @return Tournament
      */
-    public function setExtraData(string $extraData) : Tournament
+    public function setExtraData(string $extraData): Tournament
     {
         $this->extraData = $extraData;
+
         return $this;
     }
 }

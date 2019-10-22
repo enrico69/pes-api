@@ -6,18 +6,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Player;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\ManyToMany;
-use App\Entity\Team;
 use Doctrine\ORM\Mapping\ManyToOne;
-use App\Entity\Match;
-use App\Entity\Gamer;
 
 /**
  * @ORM\Entity
@@ -39,7 +31,7 @@ class Goal
       self::TYPE_OWN_GOAL,
       self::TYPE_DIRECT_FREEKICK_GOAL,
       self::TYPE_INDIRECT_FREEKICK_GOAL,
-      self::TYPE_CORNER_GOAL
+      self::TYPE_CORNER_GOAL,
     ];
 
     /**
@@ -114,57 +106,63 @@ class Goal
     /**
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
      * @return Goal
      */
-    public function setId(int $id) : Goal
+    public function setId(int $id): Goal
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getScoredAt() : string
+    public function getScoredAt(): string
     {
         return $this->scoredAt;
     }
 
     /**
      * @param string $scoredAt
+     *
      * @return Goal
      */
-    public function setScoredAt(string $scoredAt) : Goal
+    public function setScoredAt(string $scoredAt): Goal
     {
         $this->scoredAt = $scoredAt;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * @param string $type
+     *
      * @return Goal
      */
-    public function setType(string $type) : Goal
+    public function setType(string $type): Goal
     {
         if (!\in_array($type, self::GOAL_TYPES)) {
             throw new \LogicException("Invalid goal type: $type");
         }
         $this->type = $type;
+
         return $this;
     }
 
@@ -178,11 +176,13 @@ class Goal
 
     /**
      * @param \App\Entity\Team $team
+     *
      * @return Goal
      */
     public function setTeam(Team $team): Goal
     {
         $this->team = $team;
+
         return $this;
     }
 
@@ -196,11 +196,13 @@ class Goal
 
     /**
      * @param \App\Entity\Gamer $gamer
+     *
      * @return Goal
      */
     public function setGamer(Gamer $gamer): Goal
     {
         $this->gamer = $gamer;
+
         return $this;
     }
 
@@ -214,11 +216,13 @@ class Goal
 
     /**
      * @param \App\Entity\Player $player
+     *
      * @return Goal
      */
     public function setPlayer(Player $player): Goal
     {
         $this->player = $player;
+
         return $this;
     }
 
@@ -232,11 +236,13 @@ class Goal
 
     /**
      * @param \App\Entity\Player $player
+     *
      * @return Goal
      */
     public function setAssist(Player $player): Goal
     {
         $this->assist = $player;
+
         return $this;
     }
 
@@ -250,29 +256,33 @@ class Goal
 
     /**
      * @param \App\Entity\Match $match
+     *
      * @return Goal
      */
     public function setMatch(Match $match): Goal
     {
         $this->match = $match;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getRank() : string
+    public function getRank(): string
     {
         return $this->rank;
     }
 
     /**
      * @param string $rank
+     *
      * @return Goal
      */
-    public function setRank(string $rank) : Goal
+    public function setRank(string $rank): Goal
     {
         $this->rank = $rank;
+
         return $this;
     }
 }

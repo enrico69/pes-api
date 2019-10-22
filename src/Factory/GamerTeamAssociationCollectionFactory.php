@@ -23,10 +23,11 @@ class GamerTeamAssociationCollectionFactory
     }
 
     /**
-     * @param array $associations where the key is the gamer id and the value is the team id.
+     * @param array $associations where the key is the gamer id and the value is the team id
+     *
      * @return \App\Model\GamerTeamAssociationCollection
      */
-    public function createFromAssociativeArray(array $associations) : GamerTeamAssociationCollection
+    public function createFromAssociativeArray(array $associations): GamerTeamAssociationCollection
     {
         $gamerCollection = $this->gamerCollectionFactory->createFromArray(\array_keys($associations));
         $teamCollection = $this->teamCollectionFactory->createFromArray(\array_values($associations));

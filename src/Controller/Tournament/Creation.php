@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
 use App\Service\Tournament\TournamentFormCreationRequestHandler;
 
-class Creation extends  AbstractController
+class Creation extends AbstractController
 {
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
@@ -27,13 +27,13 @@ class Creation extends  AbstractController
     }
 
     /**
-     * Creation screen
+     * Creation screen.
      *
      * @Route("/tournament-creation", name="tournament-creation")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index() : Response
+    public function index(): Response
     {
         return $this->render(
             'tournament/creation.html.twig',
@@ -42,22 +42,22 @@ class Creation extends  AbstractController
     }
 
     /**
-     * Tournament creation submission
+     * Tournament creation submission.
      *
      * @Route("/tournament-creation-submit", name="tournament-creation-submit", methods={"POST"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function submitCreation() : Response
+    public function submitCreation(): Response
     {
         $status = 'failure';
         try {
             $this->formCreationRequestHandler->process();
             $status = 'success';
         } catch (\Throwable $ex) {
-            $this->logger->error($ex->getMessage() . ': ' . $ex->getTraceAsString());
+            $this->logger->error($ex->getMessage().': '.$ex->getTraceAsString());
         }
 
         return new JsonResponse(['status' => $status]);
-   }
+    }
 }

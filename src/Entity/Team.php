@@ -39,7 +39,7 @@ class Team
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Tournament[]
-     * One team has won many titles. This is the inverse side.
+     *                               One team has won many titles. This is the inverse side.
      * @OneToMany(targetEntity="Tournament", mappedBy="teamWinner")
      */
     private $titles;
@@ -48,7 +48,7 @@ class Team
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Goal[]
-     * One team has many goals. This is the inverse side.
+     *                         One team has many goals. This is the inverse side.
      * @OneToMany(targetEntity="Goal", mappedBy="team")
      */
     private $goals;
@@ -57,7 +57,7 @@ class Team
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Event[]
-     * One team has many events. This is the inverse side.
+     *                          One team has many events. This is the inverse side.
      * @OneToMany(targetEntity="Event", mappedBy="team")
      */
     private $events;
@@ -83,16 +83,17 @@ class Team
     /**
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
      * @return Team
      */
-    public function setId(int $id) : Team
+    public function setId(int $id): Team
     {
         $this->id = $id;
 
@@ -102,14 +103,15 @@ class Team
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPlayers() : Collection
+    public function getPlayers(): Collection
     {
         return $this->players;
     }
 
-    public function setPlayers(array $players) : Team
+    public function setPlayers(array $players): Team
     {
         $this->players = $players;
+
         return  $this;
     }
 
@@ -123,18 +125,20 @@ class Team
 
     /**
      * @param \App\Entity\Goal[] $goals
+     *
      * @return Team
      */
     public function setGoals(array $goals): Team
     {
         $this->goals = $goals;
+
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getRank() : int
+    public function getRank(): int
     {
         return $this->rank;
     }

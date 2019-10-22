@@ -79,12 +79,14 @@ class Player
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $creationDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $updateDate;
@@ -106,14 +108,14 @@ class Player
 
     /**
      * @var \App\Entity\Goal[]
-     * One player has many goals. This is the inverse side.
+     *                         One player has many goals. This is the inverse side.
      * @OneToMany(targetEntity="Goal", mappedBy="player")
      */
     private $goals;
 
     /**
      * @var \App\Entity\Goal[]
-     * One player has many goals. This is the inverse side.
+     *                         One player has many goals. This is the inverse side.
      * @OneToMany(targetEntity="Goal", mappedBy="assist")
      */
     private $assists;
@@ -122,14 +124,14 @@ class Player
      * Overridden here because of the relation.
      *
      * @var \App\Entity\Event[]
-     * One player has many events. This is the inverse side.
+     *                          One player has many events. This is the inverse side.
      * @OneToMany(targetEntity="Event", mappedBy="player")
      */
     private $events;
 
     /**
      * @var \App\Entity\Appearance[]
-     * One player has many appearances. This is the inverse side.
+     *                               One player has many appearances. This is the inverse side.
      * @OneToMany(targetEntity="Appearance", mappedBy="player")
      */
     private $appearances;
@@ -153,9 +155,10 @@ class Player
 
     /**
      * @param mixed $id
+     *
      * @return Player
      */
-    public function setId(int $id) : Player
+    public function setId(int $id): Player
     {
         $this->id = $id;
 
@@ -172,9 +175,10 @@ class Player
 
     /**
      * @param mixed $firstName
+     *
      * @return Player
      */
-    public function setFirstName($firstName) : Player
+    public function setFirstName($firstName): Player
     {
         $this->firstName = $firstName;
 
@@ -191,9 +195,10 @@ class Player
 
     /**
      * @param mixed $lastName
+     *
      * @return Player
      */
-    public function setLastName($lastName) : Player
+    public function setLastName($lastName): Player
     {
         $this->lastName = $lastName;
 
@@ -210,9 +215,10 @@ class Player
 
     /**
      * @param int $goalsCount
+     *
      * @return Player
      */
-    public function setGoalsCount(int $goalsCount) : Player
+    public function setGoalsCount(int $goalsCount): Player
     {
         $this->goalsCount = $goalsCount;
 
@@ -229,9 +235,10 @@ class Player
 
     /**
      * @param int $assistsCount
+     *
      * @return Player
      */
-    public function setAssistsCount(int $assistsCount) : Player
+    public function setAssistsCount(int $assistsCount): Player
     {
         $this->assistsCount = $assistsCount;
 
@@ -248,9 +255,10 @@ class Player
 
     /**
      * @param mixed $yellowCardsCount
+     *
      * @return Player
      */
-    public function setYellowCardsCount($yellowCardsCount) : Player
+    public function setYellowCardsCount($yellowCardsCount): Player
     {
         $this->yellowCardsCount = $yellowCardsCount;
 
@@ -267,9 +275,10 @@ class Player
 
     /**
      * @param mixed $redCardsCount
+     *
      * @return Player
      */
-    public function setRedCardsCount($redCardsCount) : Player
+    public function setRedCardsCount($redCardsCount): Player
     {
         $this->redCardsCount = $redCardsCount;
 
@@ -286,9 +295,10 @@ class Player
 
     /**
      * @param mixed $ownGoalsCount
+     *
      * @return Player
      */
-    public function setOwnGoalsCount($ownGoalsCount) : Player
+    public function setOwnGoalsCount($ownGoalsCount): Player
     {
         $this->ownGoalsCount = $ownGoalsCount;
 
@@ -305,9 +315,10 @@ class Player
 
     /**
      * @param mixed $injuriesCount
+     *
      * @return Player
      */
-    public function setInjuriesCount($injuriesCount) : Player
+    public function setInjuriesCount($injuriesCount): Player
     {
         $this->injuriesCount = $injuriesCount;
 
@@ -324,9 +335,10 @@ class Player
 
     /**
      * @param mixed $matchesCount
+     *
      * @return Player
      */
-    public function setMatchesCount($matchesCount) : Player
+    public function setMatchesCount($matchesCount): Player
     {
         $this->matchesCount = $matchesCount;
 
@@ -343,11 +355,13 @@ class Player
 
     /**
      * @param \DateTimeInterface $creationDate
+     *
      * @return Player
      */
     public function setCreationDate(\DateTimeInterface $creationDate): Player
     {
         $this->creationDate = $creationDate;
+
         return $this;
     }
 
@@ -361,11 +375,13 @@ class Player
 
     /**
      * @param \DateTime $updateDate
+     *
      * @return Player
      */
     public function setUpdateDate(\DateTime $updateDate): Player
     {
         $this->updateDate = $updateDate;
+
         return $this;
     }
 
@@ -382,7 +398,7 @@ class Player
      *
      * @return \App\Entity\Player
      */
-    public function addTeam(Team $team) : Player
+    public function addTeam(Team $team): Player
     {
         $this->teams->add($team);
 
@@ -391,9 +407,10 @@ class Player
 
     /**
      * @param \App\Entity\Team $team
+     *
      * @return \App\Entity\Player
      */
-    public function removeTeam(Team $team) : Player
+    public function removeTeam(Team $team): Player
     {
         $this->teams->removeElement($team);
 
@@ -410,11 +427,13 @@ class Player
 
     /**
      * @param \App\Entity\Goal[] $goals
+     *
      * @return Player
      */
     public function setGoals(array $goals): Player
     {
         $this->goals = $goals;
+
         return $this;
     }
 
@@ -428,82 +447,88 @@ class Player
 
     /**
      * @param \App\Entity\Goal[] $assists
+     *
      * @return Player
      */
     public function setAssists(array $assists): Player
     {
         $this->assists = $assists;
+
         return $this;
     }
 
     /**
      * @param \App\Entity\Event[] $events
+     *
      * @return \App\Entity\Player
      */
-    public function setEvents(array $events) : Player
+    public function setEvents(array $events): Player
     {
         $this->events = $events;
+
         return $this;
     }
 
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEvents() : Collection
+    public function getEvents(): Collection
     {
         return $this->events;
     }
 
     /**
      * @param \App\Entity\Appearance[] $appearances
+     *
      * @return \App\Entity\Player
      */
-    public function setAppearances(array $appearances) : Player
+    public function setAppearances(array $appearances): Player
     {
         $this->appearances = $appearances;
+
         return $this;
     }
 
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAppearance() : Collection
+    public function getAppearance(): Collection
     {
         return $this->appearances;
     }
 
-    public function incrementGoalCount() : void
+    public function incrementGoalCount(): void
     {
-        $this->goalsCount++;
+        ++$this->goalsCount;
     }
 
-    public function incrementAssistCount() : void
+    public function incrementAssistCount(): void
     {
-        $this->assistsCount++;
+        ++$this->assistsCount;
     }
 
-    public function incrementOwnGoalCount() : void
+    public function incrementOwnGoalCount(): void
     {
-        $this->ownGoalsCount++;
+        ++$this->ownGoalsCount;
     }
 
-    public function incrementInjuryCount() : void
+    public function incrementInjuryCount(): void
     {
-        $this->injuriesCount++;
+        ++$this->injuriesCount;
     }
 
-    public function incrementRedCardCount() : void
+    public function incrementRedCardCount(): void
     {
-        $this->redCardsCount++;
+        ++$this->redCardsCount;
     }
 
-    public function incrementYellowCardCount() : void
+    public function incrementYellowCardCount(): void
     {
-        $this->yellowCardsCount++;
+        ++$this->yellowCardsCount;
     }
 
-    public function incrementMatchCount() : void
+    public function incrementMatchCount(): void
     {
-        $this->matchesCount++;
+        ++$this->matchesCount;
     }
 }

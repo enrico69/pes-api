@@ -8,11 +8,8 @@ namespace App\Repository;
 
 use App\Entity\Team;
 use App\Model\TeamCollection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\DBAL\FetchMode;
 
 class TeamRepository
 {
@@ -25,16 +22,18 @@ class TeamRepository
     /** @param \Doctrine\ORM\EntityManagerInterface $entityManager */
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository     = $entityManager->getRepository(Team::class);
-        $this->entityManager  = $entityManager;
+        $this->repository = $entityManager->getRepository(Team::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @param int $id
+     *
      * @return \App\Entity\Team
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function getById(int $id) : Team
+    public function getById(int $id): Team
     {
         $team = $this->repository->find($id);
         if (!$team) {
@@ -44,7 +43,7 @@ class TeamRepository
         return  $team;
     }
 
-    public function getByIds(array $teamIds) : TeamCollection
+    public function getByIds(array $teamIds): TeamCollection
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('m');
@@ -66,10 +65,12 @@ class TeamRepository
 
     /**
      * @param array|null $excludedIds
+     *
      * @return \App\Entity\Team
+     *
      * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function getRandomTeam(?array $excludedIds = null) : Team
+    public function getRandomTeam(?array $excludedIds = null): Team
     {
         if ($excludedIds) {
             foreach ($excludedIds as &$excludedId) {
@@ -78,8 +79,8 @@ class TeamRepository
             unset($excludedId);
         }
 
-        $dql = 'SELECT p.id FROM ' . Team::class . ' p WHERE p.id NOT IN (' . implode(',', $excludedIds) . ')';
-        $query = $this->entityManager ->createQuery($dql);
+        $dql = 'SELECT p.id FROM '.Team::class.' p WHERE p.id NOT IN ('.implode(',', $excludedIds).')';
+        $query = $this->entityManager->createQuery($dql);
         $result = $query->execute();
 
         if (empty($result)) {
