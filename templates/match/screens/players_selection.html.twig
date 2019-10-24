@@ -88,6 +88,7 @@
         }
 
         eventCount++;
+        setCurrentMinuteOrder();
         matchData[eventsKey][eventCount] = {[typeKey] : currentEventType, [teamIdKey]: teamId, [playerIdKey]: playerId, [happenedAtKey]: currentMinute, [eventOrderKey]: currentMinuteOrder};
 
         if (currentEventType === eventPlayerOutWithoutSubstitute) {
